@@ -49,9 +49,11 @@ class App {
     private initializeDatabaseConnection(): void {
         const { DATABASE_PATH, DATABASE_PASSWORD, DATABASE_USER } = process.env;
 
-        mongoose.connect(
-            `mongodb+srv://${DATABASE_USER}:${DATABASE_PASSWORD}${DATABASE_PATH}`
-        );
+        mongoose
+            .connect(
+                `mongodb+srv://${DATABASE_USER}:${DATABASE_PASSWORD}${DATABASE_PATH}`
+            )
+            .then(() => console.log('Database connected successfully'));
     }
 
     /** Set server to listen */
