@@ -56,3 +56,65 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNmUzNDczZ
 GET   http://localhost:3000/api/posts/6359169f84fa70cdf512a387
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNmUzNDczZTZhZGZhMWNjZDNkM2RmOCIsImlhdCI6MTY2ODE2NzE1NCwiZXhwIjoxNjY4MjUzNTU0fQ.eeytbUS_Sz08gOj_Sqa2ANP0GOxhtOl_E-uP0aokXTw
+
+
+## Production
+### Register a user
+POST https://my-nodejs-typescript.onrender.com/api/users/register
+Content-Type: application/json
+
+{
+    "username": "liveUser",
+    "name": "Live User",
+    "email": "liveuser@gmail.com",
+    "password": "testingLive"
+}
+
+### Login with username
+POST https://my-nodejs-typescript.onrender.com/api/users/loginWithUsername
+Content-Type: application/json
+
+{
+    "username": "liveUser",
+    "password": "testingLive"
+}
+
+### Login with email
+POST https://my-nodejs-typescript.onrender.com/api/users/loginWithEmail
+Content-Type: application/json
+
+{
+    "email": "liveuser@gmail.com",
+    "password": "testingLive"
+}
+
+### Get users
+GET https://my-nodejs-typescript.onrender.com/api/users
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNmU4NmUwNmQ5MGYxOTU2ODMyYTZiOSIsImlhdCI6MTY2ODE5MDY1NSwiZXhwIjoxNjY4Mjc3MDU1fQ.ETxByBk_dV7-y-24xwP-sJIopJvIwJ4cY61Z0ywDT3U
+
+### Get user details
+GET https://my-nodejs-typescript.onrender.com/api/users/636e86e06d90f1956832a6b9
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNmUzNDczZTZhZGZhMWNjZDNkM2RmOCIsImlhdCI6MTY2ODE2NzE1NCwiZXhwIjoxNjY4MjUzNTU0fQ.eeytbUS_Sz08gOj_Sqa2ANP0GOxhtOl_E-uP0aokXTw
+
+### Create post
+POST  https://my-nodejs-typescript.onrender.com/api/posts
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNmU4NmUwNmQ5MGYxOTU2ODMyYTZiOSIsImlhdCI6MTY2ODE5MDY1NSwiZXhwIjoxNjY4Mjc3MDU1fQ.ETxByBk_dV7-y-24xwP-sJIopJvIwJ4cY61Z0ywDT3U
+
+{
+    "title": "Live creator",
+    "body": "This is the first live post"
+}
+
+### Get all posts
+GET   https://my-nodejs-typescript.onrender.com/api/posts
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNmUzNDczZTZhZGZhMWNjZDNkM2RmOCIsImlhdCI6MTY2ODE2NzE1NCwiZXhwIjoxNjY4MjUzNTU0fQ.eeytbUS_Sz08gOj_Sqa2ANP0GOxhtOl_E-uP0aokXTw
+
+### Get post
+GET   https://my-nodejs-typescript.onrender.com/api/posts/636e92950826c264f3851da1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNmUzNDczZTZhZGZhMWNjZDNkM2RmOCIsImlhdCI6MTY2ODE2NzE1NCwiZXhwIjoxNjY4MjUzNTU0fQ.eeytbUS_Sz08gOj_Sqa2ANP0GOxhtOl_E-uP0aokXTw
+
