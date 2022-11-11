@@ -12,13 +12,23 @@ class PostService {
         }
     }
 
-    public async getPosts(): Promise<any> {
+    public async getPost(id: string): Promise<any> {
+        try {
+            const post = await PostModel.findById(id);
+
+            return post;
+        } catch (error) {
+            throw Error('Unable to retrieve post');
+        }
+    }
+
+    public async getAllPosts(): Promise<any> {
         try {
             const posts = await PostModel.find();
 
             return posts;
         } catch (error) {
-            throw Error('Unable to retrieve post');
+            throw Error('Unable to retrieve posts');
         }
     }
 }

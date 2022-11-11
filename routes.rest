@@ -1,0 +1,58 @@
+### Register a user
+POST http://localhost:3000/api/users/register
+Content-Type: application/json
+
+{
+    "username": "vscodeUser",
+    "name": "VSCode User",
+    "email": "testingrestclient@gmail.com",
+    "password": "testingWonder"
+}
+
+### Login with username
+POST http://localhost:3000/api/users/loginWithUsername
+Content-Type: application/json
+
+{
+    "username": "vscodeUser",
+    "password": "testingWonder"
+}
+
+### Login with email
+POST http://localhost:3000/api/users/loginWithEmail
+Content-Type: application/json
+
+{
+    "email": "testingrestclient@gmail.com",
+    "password": "testingWonder"
+}
+
+### Get users
+GET http://localhost:3000/api/users
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNmUzNDczZTZhZGZhMWNjZDNkM2RmOCIsImlhdCI6MTY2ODE2NzE1NCwiZXhwIjoxNjY4MjUzNTU0fQ.eeytbUS_Sz08gOj_Sqa2ANP0GOxhtOl_E-uP0aokXTw
+
+### Get user details
+GET http://localhost:3000/api/users/636a24ee1f6e4b6770ed4935
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNmUzNDczZTZhZGZhMWNjZDNkM2RmOCIsImlhdCI6MTY2ODE2NzE1NCwiZXhwIjoxNjY4MjUzNTU0fQ.eeytbUS_Sz08gOj_Sqa2ANP0GOxhtOl_E-uP0aokXTw
+
+### Create post
+POST  http://localhost:3000/api/posts
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNmUzNDczZTZhZGZhMWNjZDNkM2RmOCIsImlhdCI6MTY2ODE2NzE1NCwiZXhwIjoxNjY4MjUzNTU0fQ.eeytbUS_Sz08gOj_Sqa2ANP0GOxhtOl_E-uP0aokXTw
+
+{
+    "title": "Testing Post",
+    "body": "This is a testing post"
+}
+
+### Get all posts
+GET   http://localhost:3000/api/posts
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNmUzNDczZTZhZGZhMWNjZDNkM2RmOCIsImlhdCI6MTY2ODE2NzE1NCwiZXhwIjoxNjY4MjUzNTU0fQ.eeytbUS_Sz08gOj_Sqa2ANP0GOxhtOl_E-uP0aokXTw
+
+### Get post
+GET   http://localhost:3000/api/posts/6359169f84fa70cdf512a387
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNmUzNDczZTZhZGZhMWNjZDNkM2RmOCIsImlhdCI6MTY2ODE2NzE1NCwiZXhwIjoxNjY4MjUzNTU0fQ.eeytbUS_Sz08gOj_Sqa2ANP0GOxhtOl_E-uP0aokXTw
