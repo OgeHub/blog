@@ -6,7 +6,7 @@ guided me to accomplish this.
 **Description**: With this API, you can register as a user and make a post. Below are routes in this API.
 
 ## Routes
-**Register**: 
+**Register**:  
 POST http://localhost:3000/api/users/register  
 Content-Type: application/json  
 req.body:  
@@ -61,7 +61,7 @@ Content-Type: application/json
 Authorization: Bearer accessToken(from response of register or login)  
 
 **Get a post**:  
-GET   http://localhost:3000/api/post/:id  
+GET   http://localhost:3000/api/posts/:id  
 Content-Type: application/json  
 Authorization: Bearer accessToken(from response of register or login)  
 
