@@ -6,10 +6,10 @@ guided me to accomplish this.
 **Description**: With this API, you can register as a user and make a post. Below are routes in this API.
 
 ## Routes
-###Register:
+**Register**: 
 POST http://localhost:3000/api/users/register  
 Content-Type: application/json  
-
+req.body:  
 {
     "username": "testUser",
     "name": "Test User",
@@ -17,49 +17,50 @@ Content-Type: application/json
     "password": "testing12"
 }
 
-###Login with username
+**Login with username**:  
 POST http://localhost:3000/api/users/loginWithUsername  
 Content-Type: application/json  
-
+req.body:  
 {
     "username": "testUser",
     "password": "testing12"
 }
 
-###Login with Email
+**Login with Email**:  
 POST http://localhost:3000/api/users/loginWithEmail  
 Content-Type: application/json  
-
+req.body:  
 {
     "email": "test@user.api",
     "password": "testing12"
 }
 
-###Get all users
+**Get all users**:  
 GET http://localhost:3000/api/users  
 Content-Type: application/json  
 Authorization: Bearer accessToken(from response of register or login)  
 
-###Get a user details
+**Get a user details**:  
 GET http://localhost:3000/api/users/:id  
 Content-Type: application/json  
 Authorization: Bearer accessToken(from response of register or login)  
 
-###Create a post
+**Create a post**:  
 POST  http://localhost:3000/api/posts  
 Content-Type: application/json  
 Authorization: Bearer accessToken(from response of register or login)  
+req.body:  
 {
     "title": "Testing Post",
     "body": "This is a testing post"
 }
 
-###Get all posts
+**Get all posts**:  
 GET   http://localhost:3000/api/posts  
 Content-Type: application/json  
 Authorization: Bearer accessToken(from response of register or login)  
 
-###Get a post
+**Get a post**:  
 GET   http://localhost:3000/api/post/:id  
 Content-Type: application/json  
 Authorization: Bearer accessToken(from response of register or login)  
