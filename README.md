@@ -7,7 +7,7 @@ guided me to accomplish this.
 
 ## Base URL
 
-**Local**: `Base_URL` = `http://localhost:3000/api`
+**Local**: `Base_URL` = `http://localhost:3000/api`  
 **Live**: `Base_URL` = `https://my-nodejs-typescript.onrender.com/api`
 
 ## Routes
