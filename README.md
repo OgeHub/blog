@@ -6,9 +6,9 @@ guided me to accomplish this.
 **Description**: With this API, you can register as a user and make a post. Below are routes in this API.
 
 ## Routes
-**Register**:
-POST http://localhost:3000/api/users/register
-Content-Type: application/json
+###Register:
+POST http://localhost:3000/api/users/register  
+Content-Type: application/json  
 
 {
     "username": "testUser",
@@ -17,55 +17,55 @@ Content-Type: application/json
     "password": "testing12"
 }
 
-**Login with username**
-POST http://localhost:3000/api/users/loginWithUsername
-Content-Type: application/json
+###Login with username
+POST http://localhost:3000/api/users/loginWithUsername  
+Content-Type: application/json  
 
 {
     "username": "testUser",
     "password": "testing12"
 }
 
-**Login with Email**
-POST http://localhost:3000/api/users/loginWithEmail
-Content-Type: application/json
+###Login with Email
+POST http://localhost:3000/api/users/loginWithEmail  
+Content-Type: application/json  
 
 {
     "email": "test@user.api",
     "password": "testing12"
 }
 
-**Get all users**
-GET http://localhost:3000/api/users
-Content-Type: application/json
-Authorization: Bearer accessToken(from response of register or login)
+###Get all users
+GET http://localhost:3000/api/users  
+Content-Type: application/json  
+Authorization: Bearer accessToken(from response of register or login)  
 
-**Get a user details**
-GET http://localhost:3000/api/users/:id
-Content-Type: application/json
-Authorization: Bearer accessToken(from response of register or login)
+###Get a user details
+GET http://localhost:3000/api/users/:id  
+Content-Type: application/json  
+Authorization: Bearer accessToken(from response of register or login)  
 
-**Create a post**
-POST  http://localhost:3000/api/posts
-Content-Type: application/json
-Authorization: Bearer accessToken(from response of register or login)
+###Create a post
+POST  http://localhost:3000/api/posts  
+Content-Type: application/json  
+Authorization: Bearer accessToken(from response of register or login)  
 {
     "title": "Testing Post",
     "body": "This is a testing post"
 }
 
-**Get all posts**
-GET   http://localhost:3000/api/posts
-Content-Type: application/json
-Authorization: Bearer accessToken(from response of register or login)
+###Get all posts
+GET   http://localhost:3000/api/posts  
+Content-Type: application/json  
+Authorization: Bearer accessToken(from response of register or login)  
 
-**Get a post**
-GET   http://localhost:3000/api/post/:id
-Content-Type: application/json
-Authorization: Bearer accessToken(from response of register or login)
+###Get a post
+GET   http://localhost:3000/api/post/:id  
+Content-Type: application/json  
+Authorization: Bearer accessToken(from response of register or login)  
 
 ## Technologies
-**NodeJS TypeScript Express MongoDB
+**NodeJS TypeScript Express MongoDB**
 
 *Updates coming soon*: 
 1. Live URL 
