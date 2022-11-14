@@ -3,6 +3,7 @@ import token from '@/utils/token';
 
 class UserService {
     public async register(
+        userID: number,
         username: string,
         name: string,
         email: string,
@@ -11,6 +12,7 @@ class UserService {
     ): Promise<object | Error> {
         try {
             const user = await UserModel.create({
+                userID,
                 username,
                 name,
                 email,
@@ -80,11 +82,24 @@ class UserService {
 
     public async getAllUsers(): Promise<any> {
         try {
-            const users = await UserModel.find();
+            const users = await UserModel.find().sort({ createdAt: -1 });
 
             return users;
         } catch (error) {
             throw Error('Users not found');
+        }
+    }
+
+    public async editUser(userID: number, data: object): Promise<any> {
+        try {
+            const user = await UserModel.findOneAndUpdate({ userID }, data, {
+                new: true,
+                runValidators: true,
+            });
+
+            return user;
+        } catch (error) {
+            throw Error('Unable to edit user details');
         }
     }
 }

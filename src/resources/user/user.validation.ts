@@ -19,4 +19,9 @@ const loginWithUsername = Joi.object({
     password: Joi.string().required(),
 });
 
-export default { register, loginWithEmail, loginWithUsername };
+/** Validates edit user data */
+const edit = Joi.object({
+    username: Joi.string(),
+    name: Joi.string().max(30),
+});
+export default { register, loginWithEmail, loginWithUsername, edit };

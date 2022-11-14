@@ -6,4 +6,9 @@ const create = Joi.object({
     body: Joi.string().required(),
 });
 
-export default { create };
+/**Validates edit post data*/
+const edit = Joi.object({
+    title: Joi.string(),
+    body: Joi.string(),
+});
+export default { create, edit };

@@ -5,6 +5,11 @@ import { string } from 'joi';
 
 const UserSchema = new Schema(
     {
+        userID: {
+            type: Number,
+            required: true,
+        },
+
         username: {
             type: String,
             required: true,

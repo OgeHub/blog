@@ -26,9 +26,18 @@ class PostController implements Controller {
 
         this.router.get(`${this.path}/:id`, authenticated, this.getPost);
         this.router.get(`${this.path}`, authenticated, this.getPosts);
+        this.router.delete(`${this.path}/:id`, authenticated, this.deletePost);
+        this.router.patch(
+            `${this.path}/:id`,
+            authenticated,
+            validationMiddleware(validate.edit),
+            this.editPost
+        );
     }
 
     /** Post Controllers */
+
+    /**Create a post */
     private create = async (
         req: Request,
         res: Response,
@@ -36,7 +45,8 @@ class PostController implements Controller {
     ): Promise<Response | void> => {
         try {
             const { title, body } = req.body;
-            const post = await this.PostService.create(title, body);
+            const userID = req.user.userID;
+            const post = await this.PostService.create(title, body, userID);
 
             res.status(201).json({ post });
         } catch (error: any) {
@@ -44,6 +54,7 @@ class PostController implements Controller {
         }
     };
 
+    /**Get a post */
     private getPost = async (
         req: Request,
         res: Response,
@@ -62,6 +73,7 @@ class PostController implements Controller {
         }
     };
 
+    /**Get all posts */
     private getPosts = async (
         req: Request,
         res: Response,
@@ -76,6 +88,44 @@ class PostController implements Controller {
         } catch (error: any) {
             next(new HttpException(404, error.message));
         }
+    };
+
+    /**Delete post */
+    private deletePost = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<Response | void> => {
+        try {
+            const id = req.params.id;
+            const userID = req.user.userID;
+            const post = await this.PostService.deletePost(id, userID);
+            res.status(200).json({
+                message: 'Post deleted successfully',
+            });
+        } catch (error: any) {
+            next(new HttpException(error.statusCode, error.message));
+        }
+    };
+
+    /**Edit post */
+    private editPost = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<Response | void> => {
+        const id = req.params.id;
+        const userID = req.user.userID;
+        const { title, body } = req.body;
+        const post = await this.PostService.editPost(id, userID, {
+            title,
+            body,
+        });
+
+        res.status(200).json({
+            message: 'Post edited successfully',
+            data: post,
+        });
     };
 }
 

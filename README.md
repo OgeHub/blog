@@ -51,6 +51,16 @@ GET `Base_URL`/users/:id
 Content-Type: application/json  
 Authorization: Bearer accessToken(from response of register or login)
 
+**Edit user details**:  
+PATCH `Base_URL`/users/:id  
+Content-Type: application/json  
+Authorization: Bearer accessToken(from response of register or login)  
+req.body:  
+{
+"username": "editUser",
+"name": "Edit User"
+}
+
 **Create a post**:  
 POST `Base_URL`/posts  
 Content-Type: application/json  
@@ -71,6 +81,21 @@ GET `Base_URL`/posts/:id
 Content-Type: application/json  
 Authorization: Bearer accessToken(from response of register or login)
 
+**Delete a post**:  
+DELETE `Base_URL`/posts/:id  
+Content-Type: application/json  
+Authorization: Bearer accessToken(from response of register or login)
+
+**Edit a post**:  
+PATCH `Base_URL`/posts/:id  
+Content-Type: application/json  
+Authorization: Bearer accessToken(from response of register or login)  
+req.body:  
+{
+"title": "Editing Post",
+"body": "This is editing post"
+}
+
 ## Technologies
 
 **NodeJS TypeScript Express MongoDB**
@@ -78,8 +103,9 @@ Authorization: Bearer accessToken(from response of register or login)
 _Updates coming soon_:
 
 1. ~~Live URL~~
-2. Delete and edit post(by user that created it)
-3. Verify email
-4. Reset password
-5. Logout
-6. Sorting, limit and pagination(for get all users and get all posts)
+2. ~~Edit user details~~
+3. ~~Delete and edit post(by user that created it)~~
+4. Verify email
+5. Reset password
+6. Logout
+7. Sorting, limit and pagination(for get all users and get all posts)

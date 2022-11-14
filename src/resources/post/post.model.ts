@@ -3,6 +3,11 @@ import Post from '@/resources/post/post.interface';
 
 const PostSchema = new Schema(
     {
+        userID: {
+            type: Number,
+            required: true,
+        },
+
         title: {
             type: String,
             required: true,

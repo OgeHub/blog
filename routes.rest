@@ -37,6 +37,16 @@ GET http://localhost:3000/api/users/636a24ee1f6e4b6770ed4935
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNmUzNDczZTZhZGZhMWNjZDNkM2RmOCIsImlhdCI6MTY2ODE2NzE1NCwiZXhwIjoxNjY4MjUzNTU0fQ.eeytbUS_Sz08gOj_Sqa2ANP0GOxhtOl_E-uP0aokXTw
 
+### Edit user details
+PATCH  http://localhost:3000/api/users
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNmUzNDczZTZhZGZhMWNjZDNkM2RmOCIsImlhdCI6MTY2ODE2NzE1NCwiZXhwIjoxNjY4MjUzNTU0fQ.eeytbUS_Sz08gOj_Sqa2ANP0GOxhtOl_E-uP0aokXTw
+
+{
+    "name": "Edit User",
+    "username": "editUser"
+}
+
 ### Create post
 POST  http://localhost:3000/api/posts
 Content-Type: application/json
@@ -54,6 +64,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNmUzNDczZ
 
 ### Get post
 GET   http://localhost:3000/api/posts/6359169f84fa70cdf512a387
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNmUzNDczZTZhZGZhMWNjZDNkM2RmOCIsImlhdCI6MTY2ODE2NzE1NCwiZXhwIjoxNjY4MjUzNTU0fQ.eeytbUS_Sz08gOj_Sqa2ANP0GOxhtOl_E-uP0aokXTw
+
+### Edit post
+PATCH   http://localhost:3000/api/posts/6359169f84fa70cdf512a387
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNmUzNDczZTZhZGZhMWNjZDNkM2RmOCIsImlhdCI6MTY2ODE2NzE1NCwiZXhwIjoxNjY4MjUzNTU0fQ.eeytbUS_Sz08gOj_Sqa2ANP0GOxhtOl_E-uP0aokXTw
+
+{
+    "title": "Edit Post",
+    "body": "This is a editing post"
+}
+
+### Edit post
+DELETE    http://localhost:3000/api/posts/6359169f84fa70cdf512a387
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNmUzNDczZTZhZGZhMWNjZDNkM2RmOCIsImlhdCI6MTY2ODE2NzE1NCwiZXhwIjoxNjY4MjUzNTU0fQ.eeytbUS_Sz08gOj_Sqa2ANP0GOxhtOl_E-uP0aokXTw
 
@@ -98,6 +123,15 @@ GET https://my-nodejs-typescript.onrender.com/api/users/636e86e06d90f1956832a6b9
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNmUzNDczZTZhZGZhMWNjZDNkM2RmOCIsImlhdCI6MTY2ODE2NzE1NCwiZXhwIjoxNjY4MjUzNTU0fQ.eeytbUS_Sz08gOj_Sqa2ANP0GOxhtOl_E-uP0aokXTw
 
+### Edit user details
+PATCH  https://my-nodejs-typescript.onrender.com/api/users/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNmUzNDczZTZhZGZhMWNjZDNkM2RmOCIsImlhdCI6MTY2ODE2NzE1NCwiZXhwIjoxNjY4MjUzNTU0fQ.eeytbUS_Sz08gOj_Sqa2ANP0GOxhtOl_E-uP0aokXTw
+
+{
+    "name": "Edit User",
+    "username": "editUser"
+}
 ### Create post
 POST  https://my-nodejs-typescript.onrender.com/api/posts
 Content-Type: application/json
@@ -118,3 +152,17 @@ GET   https://my-nodejs-typescript.onrender.com/api/posts/636e92950826c264f3851d
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNmUzNDczZTZhZGZhMWNjZDNkM2RmOCIsImlhdCI6MTY2ODE2NzE1NCwiZXhwIjoxNjY4MjUzNTU0fQ.eeytbUS_Sz08gOj_Sqa2ANP0GOxhtOl_E-uP0aokXTw
 
+### Edit post
+PATCH  https://my-nodejs-typescript.onrender.com/api/posts/6359169f84fa70cdf512a387
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNmUzNDczZTZhZGZhMWNjZDNkM2RmOCIsImlhdCI6MTY2ODE2NzE1NCwiZXhwIjoxNjY4MjUzNTU0fQ.eeytbUS_Sz08gOj_Sqa2ANP0GOxhtOl_E-uP0aokXTw
+
+{
+    "title": "Edit Post",
+    "body": "This is a editing post"
+}
+
+### Edit post
+DELETE    https://my-nodejs-typescript.onrender.com/api/posts/6359169f84fa70cdf512a387
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNmUzNDczZTZhZGZhMWNjZDNkM2RmOCIsImlhdCI6MTY2ODE2NzE1NCwiZXhwIjoxNjY4MjUzNTU0fQ.eeytbUS_Sz08gOj_Sqa2ANP0GOxhtOl_E-uP0aokXTw

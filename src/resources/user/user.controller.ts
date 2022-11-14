@@ -5,6 +5,7 @@ import validationMiddleware from '@/middleware/validation.middleware';
 import validate from '@/resources/user/user.validation';
 import UserService from '@/resources/user/user.service';
 import authenticated from '@/middleware/authenticated.middleware';
+import { generateUserID } from '@/utils/random';
 
 class UserController implements Controller {
     public path = '/users';
@@ -37,10 +38,19 @@ class UserController implements Controller {
 
         this.router.get(`${this.path}/:id`, authenticated, this.getUser);
 
+        this.router.patch(
+            `${this.path}`,
+            authenticated,
+            validationMiddleware(validate.edit),
+            this.editUser
+        );
+
         this.router.get(`${this.path}`, authenticated, this.getUsers);
     }
 
     /** User Controllers */
+
+    /**Register user */
     private register = async (
         req: Request,
         res: Response,
@@ -48,7 +58,9 @@ class UserController implements Controller {
     ): Promise<Response | void> => {
         try {
             const { username, name, email, password } = req.body;
+            const userID = generateUserID();
             const user = await this.UserService.register(
+                userID,
                 username,
                 name,
                 email,
@@ -65,6 +77,7 @@ class UserController implements Controller {
         }
     };
 
+    /**Login with email */
     private loginWithEmail = async (
         req: Request,
         res: Response,
@@ -86,6 +99,7 @@ class UserController implements Controller {
         }
     };
 
+    /**Login with username */
     private loginWithUsername = async (
         req: Request,
         res: Response,
@@ -106,6 +120,7 @@ class UserController implements Controller {
         }
     };
 
+    /**Get a user details */
     private getUser = async (
         req: Request,
         res: Response,
@@ -124,6 +139,7 @@ class UserController implements Controller {
         }
     };
 
+    /**Get all users */
     private getUsers = async (
         req: Request,
         res: Response,
@@ -134,6 +150,29 @@ class UserController implements Controller {
             res.status(200).json({
                 message: 'Users retrieved successfully',
                 data: users,
+            });
+        } catch (error: any) {
+            next(new HttpException(404, error.message));
+        }
+    };
+
+    /**Edit user details */
+    private editUser = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<Response | void> => {
+        try {
+            const userID = req.user.userID;
+            const { name, username } = req.body;
+            const user = await this.UserService.editUser(userID, {
+                name,
+                username,
+            });
+
+            res.status(200).json({
+                message: 'User details edited successfully',
+                data: user,
             });
         } catch (error: any) {
             next(new HttpException(404, error.message));
