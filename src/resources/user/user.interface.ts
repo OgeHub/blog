@@ -7,8 +7,12 @@ interface User extends Document {
     password: string;
     email: string;
     role: string;
+    isEmailVerified: boolean;
+    emailVerificationToken: any;
+    verificationTokenExpires: any;
 
     isValidPassword(password: string): Promise<Error | Boolean>;
+    getEmailVerificationToken(): string;
 }
 
 export default User;

@@ -24,6 +24,8 @@ class UserController implements Controller {
             this.register
         );
 
+        this.router.patch(`${this.path}/verifyEmail/:token`, this.verifyEmail);
+
         this.router.post(
             `${this.path}/loginWithEmail`,
             validationMiddleware(validate.loginWithEmail),
@@ -71,6 +73,23 @@ class UserController implements Controller {
             res.status(201).json({
                 message: 'User registered successfully',
                 data: user,
+            });
+        } catch (error: any) {
+            next(new HttpException(400, error.message));
+        }
+    };
+
+    /**Verify Email */
+    private verifyEmail = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<Response | void> => {
+        try {
+            const token = req.params.token;
+            const message = await this.UserService.verifyEmail(token);
+            res.status(200).json({
+                message,
             });
         } catch (error: any) {
             next(new HttpException(400, error.message));

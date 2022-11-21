@@ -105,7 +105,7 @@ _Updates coming soon_:
 1. ~~Live URL~~
 2. ~~Edit user details~~
 3. ~~Delete and edit post(by user that created it)~~
-4. Verify email
+4. ~~Verify email~~
 5. Reset password
 6. Logout
 7. Sorting, limit and pagination(for get all users and get all posts)

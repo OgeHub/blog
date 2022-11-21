@@ -3,11 +3,15 @@ POST http://localhost:3000/api/users/register
 Content-Type: application/json
 
 {
-    "username": "vscodeUser",
-    "name": "VSCode User",
-    "email": "testingrestclient@gmail.com",
+    "username": "verifiedUser2",
+    "name": "Verified User2",
+    "email": "success1stclass@gmail.com",
     "password": "testingWonder"
 }
+
+### Verify email
+POST http://localhost:3000/api/users/verifyEmail/:fd7112edce3c6e39cfbaca60d08bbf05f6f65a77
+Content-Type: application/json
 
 ### Login with username
 POST http://localhost:3000/api/users/loginWithUsername

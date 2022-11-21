@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose';
 import bcrypt from 'bcrypt';
 import User from '@/resources/user/user.interface';
-import { string } from 'joi';
+import crypto from 'crypto';
 
 const UserSchema = new Schema(
     {
@@ -32,6 +32,7 @@ const UserSchema = new Schema(
         password: {
             type: String,
             required: true,
+            select: false,
         },
 
         role: {
@@ -39,6 +40,14 @@ const UserSchema = new Schema(
             default: 'user',
             enum: ['user', 'admin'],
         },
+
+        isEmailVerified: {
+            type: Boolean,
+            default: false,
+        },
+
+        emailVerificationToken: String,
+        verificationTokenExpires: Date,
     },
     { timestamps: true }
 );
@@ -56,6 +65,22 @@ UserSchema.methods.isValidPassword = async function (
     password: string
 ): Promise<Error | boolean> {
     return await bcrypt.compare(password, this.password);
+};
+
+UserSchema.methods.getEmailVerificationToken = function (): string {
+    /**Generate token */
+    const verificationToken = crypto.randomBytes(20).toString('hex');
+
+    /**Hash token  and save it*/
+    this.emailVerificationToken = crypto
+        .createHash('sha256')
+        .update(verificationToken)
+        .digest('hex');
+
+    /**Set expiry time for token*/
+    this.verificationTokenExpires = Date.now() + 10 * 60 * 1000;
+
+    return verificationToken;
 };
 
 export default model<User>('User', UserSchema);
