@@ -45,6 +45,22 @@ req.body:
 "password": "testing12"
 }
 
+**Forgot password**:  
+PATCH `Base_URL`/users/forgotPassword  
+Content-Type: application/json  
+req.body:  
+{
+"email": "test@user.api"
+}
+
+**Reset password**:  
+PATCH `Base_URL`/users/resetPassword/:token  
+Content-Type: application/json  
+req.body:  
+{
+"password": "testing12"
+}
+
 **Get all users**:  
 GET `Base_URL`/users  
 Content-Type: application/json  
