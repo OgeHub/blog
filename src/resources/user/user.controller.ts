@@ -38,6 +38,13 @@ class UserController implements Controller {
             this.loginWithUsername
         );
 
+        this.router.patch(`${this.path}/forgotPassword`, this.forgotPassword);
+
+        this.router.patch(
+            `${this.path}/resetPassword/:token`,
+            this.resetPassword
+        );
+
         this.router.get(`${this.path}/:id`, authenticated, this.getUser);
 
         this.router.patch(
@@ -133,6 +140,44 @@ class UserController implements Controller {
             res.status(200).json({
                 message: 'Login successfully',
                 data: { accessToken },
+            });
+        } catch (error: any) {
+            next(new HttpException(400, error.message));
+        }
+    };
+
+    /**Forgot password */
+    private forgotPassword = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<Response | void> => {
+        try {
+            const message = await this.UserService.forgotPassword(
+                req.body.email
+            );
+
+            res.status(200).json({
+                message,
+            });
+        } catch (error: any) {
+            next(new HttpException(400, error.message));
+        }
+    };
+
+    /**Reset Password */
+    private resetPassword = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) => {
+        try {
+            const message = await this.UserService.resetPassword(
+                req.params.token,
+                req.body.password
+            );
+            res.status(200).json({
+                message,
             });
         } catch (error: any) {
             next(new HttpException(400, error.message));

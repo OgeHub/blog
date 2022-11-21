@@ -32,7 +32,6 @@ const UserSchema = new Schema(
         password: {
             type: String,
             required: true,
-            select: false,
         },
 
         role: {
@@ -48,6 +47,8 @@ const UserSchema = new Schema(
 
         emailVerificationToken: String,
         verificationTokenExpires: Date,
+        passwordResetToken: String,
+        passwordTokenExpires: Date,
     },
     { timestamps: true }
 );
@@ -77,10 +78,25 @@ UserSchema.methods.getEmailVerificationToken = function (): string {
         .update(verificationToken)
         .digest('hex');
 
-    /**Set expiry time for token*/
+    /**Set expiration date for token*/
     this.verificationTokenExpires = Date.now() + 10 * 60 * 1000;
 
     return verificationToken;
 };
 
+UserSchema.methods.getPasswordResetToken = function (): string {
+    /**Generate token */
+    const resetToken = crypto.randomBytes(20).toString('hex');
+
+    /**Hash token and save it */
+    this.passwordResetToken = crypto
+        .createHash('sha256')
+        .update(resetToken)
+        .digest('hex');
+
+    /**Set expiration date for token */
+    this.passwordTokenExpires = Date.now() + 10 * 60 * 1000;
+
+    return resetToken;
+};
 export default model<User>('User', UserSchema);

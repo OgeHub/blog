@@ -136,6 +136,74 @@ class UserService {
         }
     }
 
+    public async forgotPassword(email: string): Promise<string | Error> {
+        try {
+            /**Find user */
+            const user = await UserModel.findOne({ email });
+            if (!user) {
+                throw Error('There  is no user with this email');
+            }
+
+            /**Generate password reset token */
+            const token = user.getPasswordResetToken();
+
+            await user.save();
+
+            const passwordResetLink = `http://localhost:3000/api/users/resetPassword/${token}`;
+
+            /**Send password rest link */
+            const mailOptions = {
+                from: process.env.SENDER_EMAIL,
+                to: email,
+                subject: 'Password reset Link',
+                text: `Click on this link: ${passwordResetLink} to reset your password.`,
+            };
+
+            const emailTransporter = await transporter();
+            emailTransporter.sendMail(mailOptions, (err: any, info: any) => {
+                if (err) console.log(err.message);
+
+                console.log(`Email sent: ${info.response}`);
+            });
+
+            return 'Password resent link sent successfully';
+        } catch (error) {
+            throw Error('Unable to send password reset link');
+        }
+    }
+
+    public async resetPassword(
+        token: string,
+        password: string
+    ): Promise<string | Error> {
+        try {
+            /**Hash token */
+            const hashedToken = crypto
+                .createHash('sha256')
+                .update(token)
+                .digest('hex');
+
+            /**Find user */
+            const user = await UserModel.findOne({
+                passwordResetToken: hashedToken,
+                passwordTokenExpires: { $gt: Date.now() },
+            });
+            if (!user) {
+                throw Error('Invalid or expired token');
+            }
+
+            /**Update password */
+            user.password = password;
+            user.passwordResetToken = undefined;
+            user.passwordTokenExpires = undefined;
+            await user.save();
+
+            return 'Password updated successfully';
+        } catch (error) {
+            throw Error('Unable to reset password');
+        }
+    }
+
     public async getUser(id: string): Promise<object | null> {
         try {
             const user = await UserModel.findById(id);

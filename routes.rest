@@ -3,9 +3,9 @@ POST http://localhost:3000/api/users/register
 Content-Type: application/json
 
 {
-    "username": "verifiedUser2",
-    "name": "Verified User2",
-    "email": "success1stclass@gmail.com",
+    "username": "verifiedUser3",
+    "name": "Verified User3",
+    "email": "ezehsuccess0476@gmail.com",
     "password": "testingWonder"
 }
 
@@ -27,7 +27,7 @@ POST http://localhost:3000/api/users/loginWithEmail
 Content-Type: application/json
 
 {
-    "email": "testingrestclient@gmail.com",
+    "email": "success1stclass@gmail.com",
     "password": "testingWonder"
 }
 

@@ -23,6 +23,10 @@ req.body:
 "password": "testing12"
 }
 
+**Verify Email**:  
+PATCH `Base_URL`/users/verifyEmail/:token  
+Content-Type: application/json
+
 **Login with username**:  
 POST `Base_URL`/users/loginWithUsername  
 Content-Type: application/json  
@@ -106,6 +110,6 @@ _Updates coming soon_:
 2. ~~Edit user details~~
 3. ~~Delete and edit post(by user that created it)~~
 4. ~~Verify email~~
-5. Reset password
+5. ~~Reset password~~
 6. Logout
 7. Sorting, limit and pagination(for get all users and get all posts)
