@@ -18,7 +18,7 @@ const createTransporter = async (): Promise<any> => {
     const accessToken = new Promise((resolve, reject) => {
         oauth2Client.getAccessToken((err: any, token: any) => {
             if (err) {
-                reject('Failed to create access token :( ' + err);
+                reject(`Failed to create access token: ${err}`);
             }
             resolve(token);
         });

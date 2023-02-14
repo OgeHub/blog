@@ -51,8 +51,8 @@ class UserService {
             });
 
             return newUser;
-        } catch (error) {
-            throw Error('Unable to create user');
+        } catch (error: any) {
+            throw Error(error.message);
         }
     }
 

@@ -10,7 +10,7 @@ Content-Type: application/json
 }
 
 ### Verify email
-POST http://localhost:3000/api/users/verifyEmail/:fd7112edce3c6e39cfbaca60d08bbf05f6f65a77
+PATCH http://localhost:3000/api/users/verifyEmail/:fd7112edce3c6e39cfbaca60d08bbf05f6f65a77
 Content-Type: application/json
 
 ### Login with username
