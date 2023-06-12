@@ -13,109 +13,162 @@ guided me to accomplish this.
 ## Routes
 
 **Register**:  
-POST `Base_URL`/users/register  
-Content-Type: application/json  
-req.body:  
+``` http
+POST /users/register 
+Host: Base_URL
+Content-type: application/json 
+```
+- Request body: 
+``` json
 {
 "username": "testUser",
 "name": "Test User",
 "email": "test@user.api",
 "password": "testing12"
 }
-
+```
 **Verify Email**:  
-PATCH `Base_URL`/users/verifyEmail/:token  
-Content-Type: application/json
+```http
+PATCH /users/verifyEmail/:token
+Host: Base_URL
 
+Content-Type: application/json
+```
 **Login with username**:  
-POST `Base_URL`/users/loginWithUsername  
+``` http
+POST /users/loginWithUsername  
+Host: Base_URL
 Content-Type: application/json  
-req.body:  
+```
+- Request body:
+``` json
+
 {
 "username": "testUser",
 "password": "testing12"
 }
-
+```
 **Login with Email**:  
-POST `Base_URL`/users/loginWithEmail  
+```http
+POST /users/loginWithEmail
+Host: Base_URL
 Content-Type: application/json  
-req.body:  
+```
+- Request body:
+``` json
+  
 {
 "email": "test@user.api",
 "password": "testing12"
 }
-
-**Forgot password**:  
-PATCH `Base_URL`/users/forgotPassword  
+```
+**Forgot password**: 
+```http
+PATCH /users/forgotPassword 
+Host: Base_URL
 Content-Type: application/json  
-req.body:  
+```
+- Request body:
+``` json
+
 {
 "email": "test@user.api"
 }
-
+```
 **Reset password**:  
-PATCH `Base_URL`/users/resetPassword/:token  
-Content-Type: application/json  
-req.body:  
+```http
+PATCH /users/resetPassword/:token  
+Host: Base_URL
+Content-Type: application/json 
+```
+- Request body:
+``` json
+  
 {
 "password": "testing12"
 }
-
+```
 **Get all users**:  
-GET `Base_URL`/users  
-Content-Type: application/json  
+```http
+GET /users  
+Host: Base_URL
+Accept: application/json  
 Authorization: Bearer accessToken(from response of register or login)
-
+```
 **Get a user details**:  
-GET `Base_URL`/users/:id  
+``` http
+GET /users/:id  
+Host: Base_URL
 Content-Type: application/json  
 Authorization: Bearer accessToken(from response of register or login)
-
+```
 **Edit user details**:  
-PATCH `Base_URL`/users/:id  
+```http
+PATCH /users/:id  
+Host: Base_URL
 Content-Type: application/json  
-Authorization: Bearer accessToken(from response of register or login)  
-req.body:  
+Authorization: Bearer accessToken(from response of register or login) 
+```
+- Request body:
+```json
+  
 {
 "username": "editUser",
 "name": "Edit User"
 }
-
+```
 **Create a post**:  
-POST `Base_URL`/posts  
+```http
+POST /posts  
+Host: Base_URL
 Content-Type: application/json  
-Authorization: Bearer accessToken(from response of register or login)  
-req.body:  
+Authorization: Bearer accessToken(from response of register or login)
+```
+- Request body:
+```json
+
 {
 "title": "Testing Post",
 "body": "This is a testing post"
 }
+```
 
 **Get all posts**:  
-GET `Base_URL`/posts  
+```http
+GET /posts  
+Host: Base_URL
 Content-Type: application/json  
 Authorization: Bearer accessToken(from response of register or login)
-
-**Get a post**:  
-GET `Base_URL`/posts/:id  
+```
+**Get a post**: 
+```http
+GET /posts/:id  
+Host: Base_URL
 Content-Type: application/json  
 Authorization: Bearer accessToken(from response of register or login)
-
+```
 **Delete a post**:  
-DELETE `Base_URL`/posts/:id  
+```http
+DELETE /posts/:id  
+Host: Base_URL
 Content-Type: application/json  
 Authorization: Bearer accessToken(from response of register or login)
-
+```
 **Edit a post**:  
-PATCH `Base_URL`/posts/:id  
+```http
+PATCH /posts/:id  
+Host: Base_URL
 Content-Type: application/json  
-Authorization: Bearer accessToken(from response of register or login)  
-req.body:  
+Authorization: Bearer accessToken(from response of register or login) 
+```
+- Request body:
+```json
+  
 {
 "title": "Editing Post",
 "body": "This is editing post"
 }
-
+```
 ## Technologies
 
 **NodeJS TypeScript Express MongoDB**
