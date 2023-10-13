@@ -20,6 +20,7 @@ class App {
         this.initializeDatabaseConnection();
         this.initializeMiddleware();
         this.initializeControllers(controllers);
+        this.initializeBaseURL();
         this.initializeErrorHandling();
     }
 
@@ -37,6 +38,15 @@ class App {
     private initializeControllers(controllers: Controller[]): void {
         controllers.forEach((controller: Controller) => {
             this.express.use('/api', controller.router);
+        });
+    }
+
+    private initializeBaseURL(): any {
+        this.express.get('/', (req, res) => {
+            return res.status(200).send({
+                status: 'success',
+                message: 'Welcome to Blog API',
+            });
         });
     }
 
