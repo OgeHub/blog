@@ -46,7 +46,7 @@
         "tsc": "^2.0.4"
     },
     "engines": {
-        "node": "18.16.0"
+        "node": "18.18.2"
     },
     "_moduleAliases": {
         "@/resources": "dist/resources",
