@@ -42,7 +42,7 @@ class App {
     }
 
     private initializeBaseURL(): any {
-        this.express.get('/', (req, res) => {
+        this.express.get('/api', (req, res) => {
             return res.status(200).send({
                 status: 'success',
                 message: 'Welcome to Blog API',
