@@ -7,14 +7,14 @@ guided me to accomplish this.
 
 ## Base URL
 
-**Local**: `Base_URL` = `http://localhost:3000/api`  
+**Local**: `Base_URL` = `http://localhost:3000`  
 **Live**: `Base_URL` = `https://my-nodejs-typescript.onrender.com`
 
 ## Routes
 
 **Register**:  
 ``` http
-POST /users/register 
+POST api/users/register 
 Host: Base_URL
 Content-type: application/json 
 ```
@@ -29,14 +29,14 @@ Content-type: application/json
 ```
 **Verify Email**:  
 ```http
-PATCH /users/verifyEmail/:token
+PATCH api/users/verifyEmail/:token
 Host: Base_URL
 
 Content-Type: application/json
 ```
 **Login with username**:  
 ``` http
-POST /users/loginWithUsername  
+POST api/users/loginWithUsername  
 Host: Base_URL
 Content-Type: application/json  
 ```
@@ -50,7 +50,7 @@ Content-Type: application/json
 ```
 **Login with Email**:  
 ```http
-POST /users/loginWithEmail
+POST api/users/loginWithEmail
 Host: Base_URL
 Content-Type: application/json  
 ```
@@ -64,7 +64,7 @@ Content-Type: application/json
 ```
 **Forgot password**: 
 ```http
-PATCH /users/forgotPassword 
+PATCH api/users/forgotPassword 
 Host: Base_URL
 Content-Type: application/json  
 ```
@@ -77,7 +77,7 @@ Content-Type: application/json
 ```
 **Reset password**:  
 ```http
-PATCH /users/resetPassword/:token  
+PATCH api/users/resetPassword/:token  
 Host: Base_URL
 Content-Type: application/json 
 ```
@@ -90,21 +90,21 @@ Content-Type: application/json
 ```
 **Get all users**:  
 ```http
-GET /users  
+GET api/users  
 Host: Base_URL
 Accept: application/json  
 Authorization: Bearer accessToken(from response of register or login)
 ```
 **Get a user details**:  
 ``` http
-GET /users/:id  
+GET api/users/:id  
 Host: Base_URL
 Content-Type: application/json  
 Authorization: Bearer accessToken(from response of register or login)
 ```
 **Edit user details**:  
 ```http
-PATCH /users/:id  
+PATCH api/users/:id  
 Host: Base_URL
 Content-Type: application/json  
 Authorization: Bearer accessToken(from response of register or login) 
@@ -119,7 +119,7 @@ Authorization: Bearer accessToken(from response of register or login)
 ```
 **Create a post**:  
 ```http
-POST /posts  
+POST api/posts  
 Host: Base_URL
 Content-Type: application/json  
 Authorization: Bearer accessToken(from response of register or login)
@@ -135,28 +135,28 @@ Authorization: Bearer accessToken(from response of register or login)
 
 **Get all posts**:  
 ```http
-GET /posts  
+GET api/posts  
 Host: Base_URL
 Content-Type: application/json  
 Authorization: Bearer accessToken(from response of register or login)
 ```
 **Get a post**: 
 ```http
-GET /posts/:id  
+GET api/posts/:id  
 Host: Base_URL
 Content-Type: application/json  
 Authorization: Bearer accessToken(from response of register or login)
 ```
 **Delete a post**:  
 ```http
-DELETE /posts/:id  
+DELETE api/posts/:id  
 Host: Base_URL
 Content-Type: application/json  
 Authorization: Bearer accessToken(from response of register or login)
 ```
 **Edit a post**:  
 ```http
-PATCH /posts/:id  
+PATCH api/posts/:id  
 Host: Base_URL
 Content-Type: application/json  
 Authorization: Bearer accessToken(from response of register or login) 
