@@ -4,9 +4,11 @@ WORKDIR /home
 
 COPY package*.json ./
 
-COPY ./src .
+COPY tsconfig.json ./
 
-RUN npm install
+RUN npm install typescript
+
+COPY ./src .
 
 RUN npm run build
 
