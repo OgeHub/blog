@@ -10,7 +10,7 @@ RUN npm install typescript
 
 COPY ./src .
 
-RUN npm run build
+RUN tsc
 
 EXPOSE 3000
 
