@@ -8,8 +8,6 @@ COPY tsconfig.json ./
 
 RUN npm install typescript
 
-RUN npx tsc
-
 COPY ./src .
 
 RUN npm run build
