@@ -1,6 +1,6 @@
 import UserModel from '@/resources/user/user.model';
 import token from '@/utils/token';
-import transporter from '@/utils/shared/createTransport';
+import { sendEmailVerificationLink } from '@/utils/shared/email';
 import crypto from 'crypto';
 
 class UserService {
@@ -11,7 +11,7 @@ class UserService {
         email: string,
         password: string,
         role: string
-    ): Promise<object | Error> {
+    ): Promise<any | Error> {
         try {
             /**Check if user exist */
             const user = await UserModel.findOne({ email });
@@ -33,24 +33,7 @@ class UserService {
 
             await newUser.save();
 
-            const verificationLink = `http://localhost:3000/api/users/verifyEmail/${token}`;
-
-            /**Send verification link */
-            const mailOptions = {
-                from: process.env.SENDER_EMAIL,
-                to: email,
-                subject: 'Email Verification Link',
-                text: `Click on this link: ${verificationLink} to verify your email`,
-            };
-
-            const emailTransporter = await transporter();
-            emailTransporter.sendMail(mailOptions, (err: any, info: any) => {
-                if (err) console.log(err.message);
-
-                console.log(`Email sent: ${info.response}`);
-            });
-
-            return newUser;
+            return { newUser, token };
         } catch (error: any) {
             throw Error(error.message);
         }
@@ -149,24 +132,7 @@ class UserService {
 
             await user.save();
 
-            const passwordResetLink = `http://localhost:3000/api/users/resetPassword/${token}`;
-
-            /**Send password rest link */
-            const mailOptions = {
-                from: process.env.SENDER_EMAIL,
-                to: email,
-                subject: 'Password reset Link',
-                text: `Click on this link: ${passwordResetLink} to reset your password.`,
-            };
-
-            const emailTransporter = await transporter();
-            emailTransporter.sendMail(mailOptions, (err: any, info: any) => {
-                if (err) console.log(err.message);
-
-                console.log(`Email sent: ${info.response}`);
-            });
-
-            return 'Password resent link sent successfully';
+            return token;
         } catch (error) {
             throw Error('Unable to send password reset link');
         }
