@@ -28,24 +28,24 @@ class UserController implements Controller {
             this.register
         );
 
-        this.router.patch(`${this.path}/verifyEmail/:token`, this.verifyEmail);
+        this.router.patch(`${this.path}/verify_email/:token`, this.verifyEmail);
 
         this.router.post(
-            `${this.path}/loginWithEmail`,
+            `${this.path}/login_with_email`,
             validationMiddleware(validate.loginWithEmail),
             this.loginWithEmail
         );
 
         this.router.post(
-            `${this.path}/loginWithUsername`,
+            `${this.path}/login_with_username`,
             validationMiddleware(validate.loginWithUsername),
             this.loginWithUsername
         );
 
-        this.router.patch(`${this.path}/forgotPassword`, this.forgotPassword);
+        this.router.patch(`${this.path}/forgot_password`, this.forgotPassword);
 
         this.router.patch(
-            `${this.path}/resetPassword/:token`,
+            `${this.path}/reset_password/:token`,
             this.resetPassword
         );
 

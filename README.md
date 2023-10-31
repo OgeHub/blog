@@ -34,7 +34,7 @@ Content-type: application/json
 **Verify Email**:
 
 ```http
-PATCH /users/verifyEmail/:token
+PATCH /users/verify_email/:token
 Host: Base_URL
 
 Content-Type: application/json
@@ -43,7 +43,7 @@ Content-Type: application/json
 **Login with username**:
 
 ```http
-POST /users/loginWithUsername
+POST /users/login_with_username
 Host: Base_URL
 Content-Type: application/json
 ```
@@ -60,7 +60,7 @@ Content-Type: application/json
 **Login with Email**:
 
 ```http
-POST /users/loginWithEmail
+POST /users/login_with_email
 Host: Base_URL
 Content-Type: application/json
 ```
@@ -77,7 +77,7 @@ Content-Type: application/json
 **Forgot password**:
 
 ```http
-PATCH /users/forgotPassword
+PATCH /users/forgot_password
 Host: Base_URL
 Content-Type: application/json
 ```
@@ -93,7 +93,7 @@ Content-Type: application/json
 **Reset password**:
 
 ```http
-PATCH /users/resetPassword/:token
+PATCH /users/reset_password/:token
 Host: Base_URL
 Content-Type: application/json
 ```
