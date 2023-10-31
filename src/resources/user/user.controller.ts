@@ -6,6 +6,10 @@ import validate from '@/resources/user/user.validation';
 import UserService from '@/resources/user/user.service';
 import authenticated from '@/middleware/authenticated.middleware';
 import { generateUserID } from '@/utils/random';
+import {
+    sendEmailVerificationLink,
+    sendPasswordResetLink,
+} from '@/utils/shared/email';
 
 class UserController implements Controller {
     public path = '/users';
@@ -68,7 +72,7 @@ class UserController implements Controller {
         try {
             const { username, name, email, password } = req.body;
             const userID = generateUserID();
-            const user = await this.UserService.register(
+            const { newUser, token } = await this.UserService.register(
                 userID,
                 username,
                 name,
@@ -77,9 +81,22 @@ class UserController implements Controller {
                 'user'
             );
 
+            const verificationLink = `${req.protocol}://${req.get(
+                'host'
+            )}/api/users/verifyEmail/${token}`;
+
+            /**Send verification link */
+            const mailOptions = {
+                email,
+                link: verificationLink,
+                username,
+            };
+
+            await sendEmailVerificationLink(mailOptions);
+
             res.status(201).json({
                 message: 'User registered successfully',
-                data: user,
+                data: newUser,
             });
         } catch (error: any) {
             next(new HttpException(400, error.message));
@@ -153,12 +170,21 @@ class UserController implements Controller {
         next: NextFunction
     ): Promise<Response | void> => {
         try {
-            const message = await this.UserService.forgotPassword(
-                req.body.email
-            );
+            const token = await this.UserService.forgotPassword(req.body.email);
+
+            const passwordResetLink = `${req.protocol}://${req.get(
+                'host'
+            )}/api/users/resetPassword/${token}`;
+
+            const mailOptions = {
+                email: req.body.email,
+                link: passwordResetLink,
+            };
+
+            await sendPasswordResetLink(mailOptions);
 
             res.status(200).json({
-                message,
+                message: 'Password reset link sent successfully',
             });
         } catch (error: any) {
             next(new HttpException(400, error.message));
