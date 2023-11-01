@@ -11,7 +11,7 @@ class UserService {
         email: string,
         password: string,
         role: string
-    ): Promise<any | Error> {
+    ): Promise<String | Error> {
         try {
             /**Check if user exist */
             const user = await UserModel.findOne({ email });
@@ -33,7 +33,7 @@ class UserService {
 
             await newUser.save();
 
-            return { newUser, token };
+            return token;
         } catch (error: any) {
             throw Error(error.message);
         }
@@ -172,7 +172,14 @@ class UserService {
 
     public async getUser(id: string): Promise<object | null> {
         try {
-            const user = await UserModel.findById(id);
+            const user = await UserModel.findById(id, {
+                password: 0,
+                __v: 0,
+                emailVerificationToken: 0,
+                verificationTokenExpires: 0,
+                passwordResetToken: 0,
+                passwordTokenExpires: 0,
+            });
 
             return user;
         } catch (error) {
@@ -182,7 +189,19 @@ class UserService {
 
     public async getAllUsers(): Promise<any> {
         try {
-            const users = await UserModel.find().sort({ createdAt: -1 });
+            const users = await UserModel.find(
+                {},
+                {
+                    password: 0,
+                    __v: 0,
+                    emailVerificationToken: 0,
+                    verificationTokenExpires: 0,
+                    passwordResetToken: 0,
+                    passwordTokenExpires: 0,
+                }
+            ).sort({
+                createdAt: -1,
+            });
 
             return users;
         } catch (error) {
@@ -195,6 +214,14 @@ class UserService {
             const user = await UserModel.findOneAndUpdate({ userID }, data, {
                 new: true,
                 runValidators: true,
+                fields: {
+                    password: 0,
+                    __v: 0,
+                    emailVerificationToken: 0,
+                    verificationTokenExpires: 0,
+                    passwordResetToken: 0,
+                    passwordTokenExpires: 0,
+                },
             });
 
             return user;

@@ -48,7 +48,11 @@ class PostController implements Controller {
             const userID = req.user.userID;
             const post = await this.PostService.create(title, body, userID);
 
-            res.status(201).json({ post });
+            res.status(201).json({
+                status: 'success',
+                message: 'Post created successfully',
+                data: post,
+            });
         } catch (error: any) {
             next(new HttpException(400, error.message));
         }
@@ -65,6 +69,7 @@ class PostController implements Controller {
             const post = await this.PostService.getPost(id);
 
             res.status(200).json({
+                status: 'success',
                 message: 'Post retrieved successfully',
                 data: post,
             });
@@ -82,6 +87,7 @@ class PostController implements Controller {
         try {
             const posts = await this.PostService.getAllPosts();
             res.status(200).json({
+                status: 'success',
                 message: 'Posts retrieved successfully',
                 data: posts,
             });
@@ -101,6 +107,7 @@ class PostController implements Controller {
             const userID = req.user.userID;
             const post = await this.PostService.deletePost(id, userID);
             res.status(200).json({
+                status: 'success',
                 message: 'Post deleted successfully',
             });
         } catch (error: any) {
@@ -123,6 +130,7 @@ class PostController implements Controller {
         });
 
         res.status(200).json({
+            status: 'success',
             message: 'Post edited successfully',
             data: post,
         });
