@@ -72,7 +72,7 @@ class UserController implements Controller {
         try {
             const { username, name, email, password } = req.body;
             const userID = generateUserID();
-            const { newUser, token } = await this.UserService.register(
+            const token = await this.UserService.register(
                 userID,
                 username,
                 name,
@@ -95,8 +95,8 @@ class UserController implements Controller {
             await sendEmailVerificationLink(mailOptions);
 
             res.status(201).json({
+                status: 'success',
                 message: 'User registered successfully',
-                data: newUser,
             });
         } catch (error: any) {
             next(new HttpException(400, error.message));
@@ -113,6 +113,7 @@ class UserController implements Controller {
             const token = req.params.token;
             const message = await this.UserService.verifyEmail(token);
             res.status(200).json({
+                status: 'success',
                 message,
             });
         } catch (error: any) {
@@ -134,6 +135,7 @@ class UserController implements Controller {
                 password
             );
             res.status(200).json({
+                status: 'success',
                 message: 'Login successfully',
                 data: { accessToken },
             });
@@ -155,6 +157,7 @@ class UserController implements Controller {
                 password
             );
             res.status(200).json({
+                status: 'success',
                 message: 'Login successfully',
                 data: { accessToken },
             });
@@ -184,6 +187,7 @@ class UserController implements Controller {
             await sendPasswordResetLink(mailOptions);
 
             res.status(200).json({
+                status: 'success',
                 message: 'Password reset link sent successfully',
             });
         } catch (error: any) {
@@ -203,6 +207,7 @@ class UserController implements Controller {
                 req.body.password
             );
             res.status(200).json({
+                status: 'success',
                 message,
             });
         } catch (error: any) {
@@ -221,6 +226,7 @@ class UserController implements Controller {
             const user = await this.UserService.getUser(id);
 
             res.status(200).json({
+                status: 'success',
                 message: 'User retrieved successfully',
                 data: user,
             });
@@ -238,6 +244,7 @@ class UserController implements Controller {
         try {
             const users = await this.UserService.getAllUsers();
             res.status(200).json({
+                status: 'success',
                 message: 'Users retrieved successfully',
                 data: users,
             });
@@ -261,6 +268,7 @@ class UserController implements Controller {
             });
 
             res.status(200).json({
+                status: 'success',
                 message: 'User details edited successfully',
                 data: user,
             });

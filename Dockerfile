@@ -3,7 +3,7 @@ ARG NODE_VERSION=node:18-alpine3.17
 ARG ENV=production
 
 # Set build stage
-FROM $NODE_VERSION as builder
+FROM $NODE_VERSION AS builder
 
 # Set work directory
 WORKDIR /app
@@ -28,7 +28,7 @@ ENV NODE_ENV=${ENV}
 COPY package*.json ./
 
 # Install only production dependencies
-RUN npm ci
+RUN npm ci --only=production
 
 # Copy only the build artifacts from the previous stage
 COPY --from=builder /app/dist ./dist
