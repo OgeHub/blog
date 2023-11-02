@@ -1,7 +1,7 @@
 # NodeJS API using TypeScript
 
 **Introduction**: This is my first NodeJS API with TypeScript. Thanks to `Rettson` for his tutorial video on using the NodeJS API with TypeScript, which majorly
-guided me to accomplish this.
+guided me to accomplish this. [Click here](https://documenter.getpostman.com/view/29759830/2s9YXbB6i7) for the detailed API documentation on Postman.
 
 **Description**: With this API, you can register as a user and make a post. Below are the routes in this API.
 
