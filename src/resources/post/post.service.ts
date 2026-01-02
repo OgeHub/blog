@@ -60,7 +60,10 @@ class PostService {
 
             return {
                 posts,
-                cursor: posts.length > 0 ? posts[posts.length - 1]._id : null,
+                cursor:
+                    posts.length > 0
+                        ? posts[posts.length - 1]._id.toString()
+                        : null,
                 hasMore: posts.length >= limit,
             }
         } catch (error) {

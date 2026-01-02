@@ -14,7 +14,7 @@ export interface Comment extends Document {
 
 export interface postResult {
     posts: Post[] | []
-    cursor: string
+    cursor: string | null
     hasMore: boolean
 }
 

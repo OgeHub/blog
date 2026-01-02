@@ -17,6 +17,7 @@ export interface createUser {
 
 interface User extends Document {
     _id: string
+    id: string
     username: string
     firstName: string
     lastName: string
@@ -45,5 +46,11 @@ export const author_selected_field = [
     'avatar',
     'bio',
 ]
+
+export interface userResult {
+    users: User[] | []
+    cursor: string | null
+    hasMore: boolean
+}
 
 export default User

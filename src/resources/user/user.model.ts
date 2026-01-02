@@ -27,6 +27,7 @@ const UserSchema = createSchema({
         type: String,
         required: true,
         unique: true,
+        lowercase: true,
     },
 
     avatar: {

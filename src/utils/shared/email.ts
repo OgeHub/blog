@@ -1,5 +1,6 @@
 import axios from 'axios'
 import emailVerificationTemplate from '@/views/emailTemplates/verifyEmailTemplate'
+import resetPasswordTemplate from '@/views/emailTemplates/resetPasswordTemplate'
 
 interface sendEmailProps {
     subject: string
@@ -47,4 +48,19 @@ export const sendEmailVerificationLink = async ({
     await sendEmail({ recipient, html, subject: 'Explore: Verify your email' })
 }
 
-export const sendPasswordResetLink = async (mailOptions: any) => {}
+export const sendPasswordResetLink = async ({
+    recipient,
+    token,
+    firstName,
+}: {
+    recipient: string
+    token: string
+    firstName: string
+}) => {
+    const html = resetPasswordTemplate({
+        firstName,
+        resetLink: `http://localhost:3000/api/verify-email?token=${token}`,
+    })
+
+    await sendEmail({ recipient, html, subject: 'Explore: Reset password' })
+}

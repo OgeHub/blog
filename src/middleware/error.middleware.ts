@@ -37,10 +37,7 @@ export const errorMiddleware = (
     // Log the errors we didn't handle
     console.error(`[ErrorHandler]:${error.message}`)
 
-    const statusCode =
-        typeof error.statusCode === 'number' && error.statusCode !== 200
-            ? error.statusCode
-            : 500
+    const statusCode = error.status && error.status !== 200 ? error.status : 500
 
     const message =
         statusCode >= 400 && statusCode < 500

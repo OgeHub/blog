@@ -5,10 +5,9 @@ import validationMiddleware from '@/middleware/validation.middleware'
 import validate from '@/resources/user/user.validation'
 import UserService from '@/resources/user/user.service'
 import authenticated from '@/middleware/authenticated.middleware'
-import { sendPasswordResetLink } from '@/utils/shared/email'
 
 class UserController implements Controller {
-    public path = '/auth'
+    public path = '/users'
     public router = Router()
     private UserService = new UserService()
 
@@ -18,37 +17,6 @@ class UserController implements Controller {
 
     /** Initialize all user endpoints */
     private initializeRouter(): void {
-        this.router.post(
-            `${this.path}/register`,
-            validationMiddleware(validate.register),
-            this.register
-        )
-
-        this.router.patch(
-            `${this.path}/verify-email`,
-            validationMiddleware(validate.verifyEmail),
-            this.verifyEmail
-        )
-
-        this.router.post(
-            `${this.path}/login_with_email`,
-            validationMiddleware(validate.loginWithEmail),
-            this.loginWithEmail
-        )
-
-        this.router.post(
-            `${this.path}/login_with_username`,
-            validationMiddleware(validate.loginWithUsername),
-            this.loginWithUsername
-        )
-
-        this.router.patch(`${this.path}/forgot_password`, this.forgotPassword)
-
-        this.router.patch(
-            `${this.path}/reset_password/:token`,
-            this.resetPassword
-        )
-
         this.router.get(`${this.path}/:id`, authenticated, this.getUser)
 
         this.router.patch(
@@ -62,139 +30,6 @@ class UserController implements Controller {
     }
 
     /** User Controllers */
-
-    /**Register user */
-    private register = async (
-        req: Request,
-        res: Response,
-        next: NextFunction
-    ): Promise<Response | void> => {
-        try {
-            await this.UserService.register(req.body)
-
-            return res.status(201).json({
-                status: 'success',
-                message: 'User registered successfully',
-            })
-        } catch (error: any) {
-            next(new HttpException(400, error.message))
-        }
-    }
-
-    /**Verify Email */
-    private verifyEmail = async (
-        req: Request,
-        res: Response,
-        next: NextFunction
-    ): Promise<Response | void> => {
-        try {
-            const token = req.body.token
-
-            const message = await this.UserService.verifyEmail(token as string)
-
-            return res.status(200).json({
-                status: 'success',
-                message,
-            })
-        } catch (error: any) {
-            console.error(`[VerifyEmail]: ${error}`)
-            next()
-        }
-    }
-
-    /**Login with email */
-    private loginWithEmail = async (
-        req: Request,
-        res: Response,
-        next: NextFunction
-    ): Promise<Response | void> => {
-        try {
-            const { email, password } = req.body
-
-            const accessToken = await this.UserService.loginWithEmail(
-                email,
-                password
-            )
-            res.status(200).json({
-                status: 'success',
-                message: 'Login successfully',
-                data: { accessToken },
-            })
-        } catch (error: any) {
-            next(new HttpException(400, error.message))
-        }
-    }
-
-    /**Login with username */
-    private loginWithUsername = async (
-        req: Request,
-        res: Response,
-        next: NextFunction
-    ): Promise<Response | void> => {
-        try {
-            const { username, password } = req.body
-            const accessToken = await this.UserService.loginWithUsername(
-                username,
-                password
-            )
-            res.status(200).json({
-                status: 'success',
-                message: 'Login successfully',
-                data: { accessToken },
-            })
-        } catch (error: any) {
-            next(new HttpException(400, error.message))
-        }
-    }
-
-    /**Forgot password */
-    private forgotPassword = async (
-        req: Request,
-        res: Response,
-        next: NextFunction
-    ): Promise<Response | void> => {
-        try {
-            const token = await this.UserService.forgotPassword(req.body.email)
-
-            const passwordResetLink = `${req.protocol}://${req.get(
-                'host'
-            )}/api/users/resetPassword/${token}`
-
-            const mailOptions = {
-                email: req.body.email,
-                link: passwordResetLink,
-            }
-
-            await sendPasswordResetLink(mailOptions)
-
-            res.status(200).json({
-                status: 'success',
-                message: 'Password reset link sent successfully',
-            })
-        } catch (error: any) {
-            next(new HttpException(400, error.message))
-        }
-    }
-
-    /**Reset Password */
-    private resetPassword = async (
-        req: Request,
-        res: Response,
-        next: NextFunction
-    ) => {
-        try {
-            const message = await this.UserService.resetPassword(
-                req.params.token,
-                req.body.password
-            )
-            res.status(200).json({
-                status: 'success',
-                message,
-            })
-        } catch (error: any) {
-            next(new HttpException(400, error.message))
-        }
-    }
 
     /**Get a user details */
     private getUser = async (
