@@ -59,7 +59,7 @@ export const sendPasswordResetLink = async ({
 }) => {
     const html = resetPasswordTemplate({
         firstName,
-        resetLink: `http://localhost:3000/api/verify-email?token=${token}`,
+        resetLink: `http://localhost:3000/api/reset-password?token=${token}`,
     })
 
     await sendEmail({ recipient, html, subject: 'Explore: Reset password' })
