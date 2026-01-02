@@ -1,11 +1,27 @@
-import { Schema, model } from 'mongoose';
-import Post from '@/resources/post/post.interface';
+import { Schema, model } from 'mongoose'
+import { Comment, Post } from '@/resources/post/post.interface'
+
+const CommentSchema = new Schema({
+    post: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        ref: 'Post',
+    },
+
+    content: {
+        type: String,
+        required: true,
+    },
+})
+
+export const CommentModel = model<Comment>('Comment', CommentSchema)
 
 const PostSchema = new Schema(
     {
-        userID: {
-            type: Number,
+        user: {
+            type: Schema.Types.ObjectId,
             required: true,
+            ref: 'User',
         },
 
         title: {
@@ -19,6 +35,12 @@ const PostSchema = new Schema(
         },
     },
     { timestamps: true }
-);
+)
 
-export default model<Post>('Post', PostSchema);
+PostSchema.virtual('comments', {
+    ref: 'Comment',
+    localField: '_id',
+    foreignField: 'post',
+})
+
+export default model<Post>('Post', PostSchema)

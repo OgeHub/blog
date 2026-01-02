@@ -1,5 +1,6 @@
-import { Request, Response, NextFunction, RequestHandler } from 'express';
-import Joi from 'joi';
+import HttpException from '@/utils/exceptions/http.exception'
+import { Request, Response, NextFunction, RequestHandler } from 'express'
+import Joi from 'joi'
 
 function validationMiddleware(schema: Joi.Schema): RequestHandler {
     return async (
@@ -11,23 +12,24 @@ function validationMiddleware(schema: Joi.Schema): RequestHandler {
             abortEarly: false,
             allowUnknown: true,
             skipUnknown: true,
-        };
+        }
 
         try {
             const value = await schema.validateAsync(
                 req.body,
                 validationOptions
-            );
-            req.body = value;
-            next();
+            )
+            req.body = value
+            next()
         } catch (err: any) {
-            const errors: string[] = [];
+            const errors: string[] = []
             err.details.forEach((error: Joi.ValidationError) => {
-                errors.push(error.message);
-            });
-            res.status(400).send({ errors });
+                errors.push(error.message)
+            })
+
+            next(new HttpException(400, 'Validation error', errors))
         }
-    };
+    }
 }
 
-export default validationMiddleware;
+export default validationMiddleware

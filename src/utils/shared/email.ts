@@ -1,92 +1,50 @@
-const nodemailer = require('nodemailer');
-const Mailgen = require('mailgen');
+import axios from 'axios'
+import emailVerificationTemplate from '@/views/emailTemplates/verifyEmailTemplate'
 
-const createTransporter = async (): Promise<any> => {
-    const config = {
-        service: 'gmail',
-        auth: {
-            user: process.env.SENDER_EMAIL,
-            pass: process.env.EMAIL_PASSWORD,
-        },
-    };
+interface sendEmailProps {
+    subject: string
+    recipient: string
+    html: string
+}
+const sendEmail = async (payload: sendEmailProps) => {
+    const url = 'https://api.brevo.com/v3/smtp/email'
+    const headers = {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'api-key': process.env.BREVO_API_KEY,
+    }
 
-    const transporter = nodemailer.createTransport(config);
+    try {
+        const body = {
+            sender: { email: process.env.SENDER_EMAIL },
+            to: [{ email: payload.recipient }],
+            subject: payload.subject,
+            htmlContent: payload.html,
+        }
 
-    return transporter;
-};
+        const response = await axios.post(url, body, { headers })
+        return response.data
+    } catch (error) {
+        console.error('sendEmail error:', error)
+        throw error
+    }
+}
 
-const mailGenerator = new Mailgen({
-    theme: 'default',
-    product: {
-        name: 'Blog',
-        link: 'https://mailgen.js/',
-        copyright: 'Copyright © 2023 Blog. All rights reserved.',
-    },
-});
+export const sendEmailVerificationLink = async ({
+    recipient,
+    token,
+    firstName,
+}: {
+    recipient: string
+    token: string
+    firstName: string
+}) => {
+    const html = emailVerificationTemplate({
+        firstName,
+        verificationLink: `http://localhost:3000/api/verify-email?token=${token}`,
+    })
 
-export const sendEmailVerificationLink = async (mailOptions: any) => {
-    console.log(mailOptions);
-    const email = {
-        body: {
-            greeting: `Dear ${mailOptions.username}`,
-            intro: "Welcome to Blog! We're very excited to have you on board.",
-            action: {
-                instructions:
-                    'To get started, please click here to verify your email:',
-                button: {
-                    color: '#48cfad',
-                    text: 'Verify your email',
-                    link: `${mailOptions.link}`,
-                },
-            },
-            outro: 'Looking forward to seeing your amazing post!',
-            signature: 'Sincerely',
-        },
-    };
-    const emailBody = mailGenerator.generate(email);
+    await sendEmail({ recipient, html, subject: 'Explore: Verify your email' })
+}
 
-    const message = {
-        from: process.env.SENDER_EMAIL,
-        to: mailOptions.email,
-        subject: 'Email Verification',
-        html: emailBody,
-    };
-    const emailTransporter = await createTransporter();
-    emailTransporter.sendMail(message, (err: any, info: any) => {
-        if (err) console.log(err.message);
-
-        console.log(`Email sent: ${info.response}`);
-    });
-};
-
-export const sendPasswordResetLink = async (mailOptions: any) => {
-    const email = {
-        body: {
-            greeting: `Hello`,
-            action: {
-                instructions:
-                    'Click on the button below to reset your password:',
-                button: {
-                    color: '#48cfad',
-                    text: 'Reset your password',
-                    link: `${mailOptions.link}`,
-                },
-            },
-            signature: 'Sincerely',
-        },
-    };
-    const emailBody = mailGenerator.generate(email);
-
-    const message = {
-        from: process.env.SENDER_EMAIL,
-        to: mailOptions.email,
-        subject: 'Password Reset Link',
-        html: emailBody,
-    };
-    const emailTransporter = await createTransporter();
-    emailTransporter.sendMail(message, (err: any, info: any) => {
-        if (err) console.log(err.message);
-
-        console.log(`Email sent: ${info.response}`);
-    });
-};
+export const sendPasswordResetLink = async (mailOptions: any) => {}
