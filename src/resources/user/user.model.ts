@@ -49,6 +49,14 @@ const UserSchema = createSchema({
         enum: Object.values(RoleEnum),
     },
 
+    city: {
+        type: String,
+    },
+
+    country: {
+        type: String,
+    },
+
     isEmailVerified: {
         type: Boolean,
         default: false,

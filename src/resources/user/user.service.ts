@@ -1,18 +1,26 @@
 import UserModel from '@/resources/user/user.model'
-import { author_selected_field, userResult } from './user.interface'
+import User, {
+    author_selected_field,
+    createUser,
+    updatePasswordProps,
+    userResult,
+} from './user.interface'
 import { paginationQuery } from '../post/post.interface'
 import mongoose from 'mongoose'
+import HttpException from '@/utils/exceptions/http.exception'
 
 class UserService {
-    public async getUser(id: string): Promise<object | null> {
+    public async getUser(id: string): Promise<User | null> {
         try {
             const user = await UserModel.findById(id).select(
                 author_selected_field.join(' ')
             )
 
+            if (!user) throw new HttpException(404, 'User not found')
+
             return user
         } catch (error) {
-            throw Error('User not found')
+            throw error
         }
     }
 
@@ -43,7 +51,10 @@ class UserService {
         }
     }
 
-    public async editUser(userID: string, data: object): Promise<any> {
+    public async editUser(
+        userID: string,
+        data: Partial<createUser>
+    ): Promise<User | null> {
         try {
             const user = await UserModel.findByIdAndUpdate(userID, data, {
                 new: true,
@@ -52,7 +63,26 @@ class UserService {
 
             return user
         } catch (error) {
-            throw Error('Unable to edit user details')
+            throw error
+        }
+    }
+
+    // Update password
+    public async updateUserPassword(
+        user: User,
+        data: updatePasswordProps
+    ): Promise<void> {
+        try {
+            const { oldPassword, newPassword } = data
+
+            if (await user.isValidPassword(oldPassword)) {
+                user.password = newPassword
+                await user.save()
+            } else {
+                throw new HttpException(400, 'Invalid Password')
+            }
+        } catch (error) {
+            throw error
         }
     }
 }

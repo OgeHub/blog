@@ -1,6 +1,5 @@
 import { Router, Request, Response, NextFunction } from 'express'
 import Controller from '@/utils/interfaces/controller.interface'
-import HttpException from '@/utils/exceptions/http.exception'
 import validationMiddleware from '@/middleware/validation.middleware'
 import validate from '@/resources/user/user.validation'
 import UserService from '@/resources/user/user.service'
@@ -17,19 +16,89 @@ class UserController implements Controller {
 
     /** Initialize all user endpoints */
     private initializeRouter(): void {
-        this.router.get(`${this.path}/:id`, authenticated, this.getUser)
+        this.router.use(authenticated)
+
+        this.router.get(`${this.path}/me`, this.getUserProfile)
 
         this.router.patch(
-            `${this.path}`,
-            authenticated,
+            `${this.path}/me`,
             validationMiddleware(validate.edit),
-            this.editUser
+            this.editUserProfile
         )
 
-        this.router.get(`${this.path}`, authenticated, this.getUsers)
+        this.router.patch(
+            `${this.path}/update-password`,
+            validationMiddleware(validate.updatePassword),
+            this.updateUserPassword
+        )
+
+        this.router.get(`${this.path}/:id`, this.getUser)
+
+        this.router.get(`${this.path}`, this.getUsers)
     }
 
     /** User Controllers */
+
+    /**Get a user profile */
+    private getUserProfile = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<Response | void> => {
+        try {
+            const user = await this.UserService.getUser(req.user.id)
+
+            return res.status(200).json({
+                status: 'success',
+                message: 'User profile retrieved successfully',
+                data: user,
+            })
+        } catch (error: any) {
+            console.error(`[GetUserProfile]: ${error}`)
+            next(error)
+        }
+    }
+
+    /**Edit user details */
+    private editUserProfile = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<Response | void> => {
+        try {
+            const userID = req.user.id
+
+            const user = await this.UserService.editUser(userID, req.body)
+
+            return res.status(200).json({
+                status: 'success',
+                message: 'User details edited successfully',
+                data: user,
+            })
+        } catch (error: any) {
+            console.error(`[EditUserProfile]: ${error}`)
+            next(error)
+        }
+    }
+
+    /**Edit user password */
+    private updateUserPassword = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<Response | void> => {
+        try {
+            await this.UserService.updateUserPassword(req.user, req.body)
+
+            return res.status(200).json({
+                status: 'success',
+                message: 'User password updated successfully',
+            })
+        } catch (error: any) {
+            console.error(`[UpdateUserPassword]: ${error}`)
+            next(error)
+        }
+    }
 
     /**Get a user details */
     private getUser = async (
@@ -39,15 +108,17 @@ class UserController implements Controller {
     ): Promise<Response | void> => {
         try {
             const id = req.params.id
+
             const user = await this.UserService.getUser(id)
 
-            res.status(200).json({
+            return res.status(200).json({
                 status: 'success',
                 message: 'User retrieved successfully',
                 data: user,
             })
         } catch (error: any) {
-            next(new HttpException(404, error.message))
+            console.error(`[GetUser]: ${error}`)
+            next(error)
         }
     }
 
@@ -71,31 +142,8 @@ class UserController implements Controller {
                 data: users,
             })
         } catch (error: any) {
-            next(new HttpException(404, error.message))
-        }
-    }
-
-    /**Edit user details */
-    private editUser = async (
-        req: Request,
-        res: Response,
-        next: NextFunction
-    ): Promise<Response | void> => {
-        try {
-            const userID = req.user._id
-            const { name, username } = req.body
-            const user = await this.UserService.editUser(userID, {
-                name,
-                username,
-            })
-
-            res.status(200).json({
-                status: 'success',
-                message: 'User details edited successfully',
-                data: user,
-            })
-        } catch (error: any) {
-            next(new HttpException(404, error.message))
+            console.error(`[GetUsers]: ${error}`)
+            next(error)
         }
     }
 }

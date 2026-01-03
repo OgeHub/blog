@@ -13,6 +13,13 @@ export interface createUser {
     email: string
     avatar?: string
     bio?: string
+    city?: string
+    country?: string
+}
+
+export interface updatePasswordProps {
+    oldPassword: string
+    newPassword: string
 }
 
 interface User extends Document {
@@ -25,6 +32,8 @@ interface User extends Document {
     bio: string
     password: string
     email: string
+    city: string
+    country: string
     role: RoleEnum
     isEmailVerified: boolean
     emailVerificationToken: string | undefined
@@ -45,6 +54,8 @@ export const author_selected_field = [
     'role',
     'avatar',
     'bio',
+    'city',
+    'country',
 ]
 
 export interface userResult {

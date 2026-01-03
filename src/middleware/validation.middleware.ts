@@ -10,7 +10,7 @@ function validationMiddleware(schema: Joi.Schema): RequestHandler {
     ): Promise<void> => {
         const validationOptions = {
             abortEarly: false,
-            allowUnknown: true,
+            allowUnknown: false,
             skipUnknown: true,
         }
 
