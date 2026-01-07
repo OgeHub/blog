@@ -1,6 +1,7 @@
 import PostModel from '@/resources/post/post.model'
 import {
     Post,
+    createPostProps,
     paginationQuery,
     postResult,
 } from '@/resources/post/post.interface'
@@ -10,21 +11,13 @@ import HttpException from '@/utils/exceptions/http.exception'
 
 class PostService {
     /**Create a post */
-    public async create(
-        title: string,
-        body: string,
-        user: string
-    ): Promise<Post> {
+    public async create(payload: createPostProps): Promise<Post> {
         try {
-            const post = await PostModel.create({
-                title,
-                body,
-                user,
-            })
+            const post = await PostModel.create(payload)
 
             return post
         } catch (error) {
-            throw new Error('Unable to create post')
+            throw error
         }
     }
 
@@ -39,7 +32,7 @@ class PostService {
 
             return post
         } catch (error) {
-            throw Error('Unable to retrieve post')
+            throw error
         }
     }
 
@@ -76,7 +69,7 @@ class PostService {
         try {
             const post = await this.getPost(id)
 
-            if (post?.user._id !== userID)
+            if (post?.user.id !== userID)
                 throw new HttpException(
                     403,
                     'You can only delete post you authored'
@@ -84,7 +77,7 @@ class PostService {
 
             await PostModel.findByIdAndDelete(id)
         } catch (error) {
-            throw Error('Unable to delete post')
+            throw error
         }
     }
 
@@ -92,12 +85,12 @@ class PostService {
     public async editPost(
         id: string,
         user: string,
-        data: Partial<Post>
+        data: Partial<createPostProps>
     ): Promise<any> {
         try {
             const post = await this.getPost(id)
 
-            if (post?.user._id !== user)
+            if (post?.user.id !== user)
                 throw new HttpException(
                     403,
                     'You can only edit post you authored'
@@ -110,7 +103,7 @@ class PostService {
 
             return updatedPost
         } catch (error) {
-            throw Error('Unable to edit post')
+            throw error
         }
     }
 }
