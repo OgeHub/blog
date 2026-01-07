@@ -1,220 +1,103 @@
-# NodeJS API using TypeScript
+# Explore API — Node.js & TypeScript
 
-**Introduction**: This is my first NodeJS API with TypeScript. Thanks to `Rettson` for his tutorial video on using the NodeJS API with TypeScript, which majorly
-guided me to accomplish this. [Click here](https://documenter.getpostman.com/view/36760391/2sBXVckY58) for the detailed API documentation on Postman.
+## 🚀 Overview
 
-**Description**: With this API, you can register as a user and make a post. Below are the routes in this API.
+**Explore** is a scalable RESTful API inspired by platforms like Medium. It powers an application where users can authenticate, create blog posts, interact with content, and subscribe to memberships.
 
-## Base URL
+Although this started as my first Node.js + TypeScript API, built with guidance from Rettson’s tutorial. It has since been optimized and extended with new features. As my backend development experience has grown, the project has evolved to follow industry standards for clean architecture, security, and maintainability.
 
-**Local**: `Base_URL` = `http://localhost:3000/api`  
-**Live**: `Base_URL` = `https://my-nodejs-typescript.onrender.com/api`
+### 📘 Postman API Documentation
 
-## Routes
+👉 https://documenter.getpostman.com/view/36760391/2sBXVckY58
 
-**Register**:
+### 🌍 Live API
 
-```http
-POST /users/register
-Host: Base_URL
-Content-type: application/json
+👉 https://my-nodejs-typescript.onrender.com/api
+
+---
+
+## ✨ Key Features
+
+### 🔐 Authentication
+
+-   User registration
+-   Email verification
+-   Secure login (JWT-based)
+-   Forgot & reset password flows
+
+### 👨🏾‍💼 User Management
+
+-   Fetch user profile
+-   Update profile information
+-   Change password
+-   List users
+
+### 📝 Blogging
+
+-   Create blog posts
+-   Comments and claps
+
+### 💳 Subscriptions
+
+-   Monthly & yearly membership plans
+
+---
+
+## 🧱 Tech Stack
+
+| Layer          | Technology |
+| -------------- | ---------- |
+| Runtime        | Node.js    |
+| Language       | TypeScript |
+| Framework      | Express.js |
+| Database       | MongoDB    |
+| ODM            | Mongoose   |
+| Authentication | JWT        |
+| Email Service  | Brevo      |
+| Hosting        | Render     |
+| Storage        | Cloudinary |
+
+---
+
+## ⚙️ Getting Started
+
+### Prerequisites
+
+-   Node.js >= 18
+-   MongoDB (local or Atlas)
+-   npm
+
+### Installation
+
+```bash
+git clone https://github.com/OgeHub/blog.git
+cd blog
+npm install
 ```
 
--   Request body:
+### Environment Variable
 
-```json
-{
-    "username": "testUser",
-    "name": "Test User",
-    "email": "test@user.api",
-    "password": "testing12"
-}
+-   Check .env.example file
+-   Create .env file in the root directory
+
+### Running the App
+
+```
+npm run dev
 ```
 
-**Verify Email**:
+Build for production
 
-```http
-PATCH /users/verify_email/:token
-Host: Base_URL
-
-Content-Type: application/json
+```
+npm run build
+npm start
 ```
 
-**Login with username**:
+## 🛣 Roadmap
 
-```http
-POST /users/login_with_username
-Host: Base_URL
-Content-Type: application/json
-```
-
--   Request body:
-
-```json
-{
-    "username": "testUser",
-    "password": "testing12"
-}
-```
-
-**Login with Email**:
-
-```http
-POST /users/login_with_email
-Host: Base_URL
-Content-Type: application/json
-```
-
--   Request body:
-
-```json
-{
-    "email": "test@user.api",
-    "password": "testing12"
-}
-```
-
-**Forgot password**:
-
-```http
-PATCH /users/forgot_password
-Host: Base_URL
-Content-Type: application/json
-```
-
--   Request body:
-
-```json
-{
-    "email": "test@user.api"
-}
-```
-
-**Reset password**:
-
-```http
-PATCH /users/reset_password/:token
-Host: Base_URL
-Content-Type: application/json
-```
-
--   Request body:
-
-```json
-{
-    "password": "testing12"
-}
-```
-
-**Get all users**:
-
-```http
-GET /users
-Host: Base_URL
-Accept: application/json
-Authorization: Bearer accessToken(from response of register or login)
-```
-
-**Get a user details**:
-
-```http
-GET /users/:id
-Host: Base_URL
-Content-Type: application/json
-Authorization: Bearer accessToken(from response of register or login)
-```
-
-**Edit user details**:
-
-```http
-PATCH /users/:id
-Host: Base_URL
-Content-Type: application/json
-Authorization: Bearer accessToken(from response of register or login)
-```
-
--   Request body:
-
-```json
-{
-    "username": "editUser",
-    "name": "Edit User"
-}
-```
-
-**Create a post**:
-
-```http
-POST /posts
-Host: Base_URL
-Content-Type: application/json
-Authorization: Bearer accessToken(from response of register or login)
-```
-
--   Request body:
-
-```json
-{
-    "title": "Testing Post",
-    "body": "This is a testing post"
-}
-```
-
-**Get all posts**:
-
-```http
-GET /posts
-Host: Base_URL
-Content-Type: application/json
-Authorization: Bearer accessToken(from response of register or login)
-```
-
-**Get a post**:
-
-```http
-GET /posts/:id
-Host: Base_URL
-Content-Type: application/json
-Authorization: Bearer accessToken(from response of register or login)
-```
-
-**Delete a post**:
-
-```http
-DELETE /posts/:id
-Host: Base_URL
-Content-Type: application/json
-Authorization: Bearer accessToken(from response of register or login)
-```
-
-**Edit a post**:
-
-```http
-PATCH /posts/:id
-Host: Base_URL
-Content-Type: application/json
-Authorization: Bearer accessToken(from response of register or login)
-```
-
--   Request body:
-
-```json
-{
-    "title": "Editing Post",
-    "body": "This is editing post"
-}
-```
-
-## Technologies
-
-**NodeJS TypeScript Express MongoDB**
-
-_Updates coming soon_:
-
-1. ~~Live URL~~
-2. ~~Edit user details~~
-3. ~~Delete and edit post(by user that created it)~~
-4. ~~Verify email~~
-5. ~~Reset password~~
-6. Logout
-7. Sorting, limit and pagination(for get all users and get all posts)
+-   ✅ Authentication & user management
+-   ✅ Blog post creation
+-   ⏳ Comments & claps
+-   ⏳ Subscription billing (Stripe)
+-   ⏳ Role-based access control
+-   ⏳ Rate limiting & API hardening

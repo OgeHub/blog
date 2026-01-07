@@ -1,15 +1,30 @@
 import { Document } from 'mongoose'
 import User from '../user/user.interface'
 
+export interface createPostProps {
+    user: string
+    title: string
+    body: string
+    postAvatar?: string
+}
+
 export interface Post extends Document {
     user: User
     title: string
     body: string
+    postAvatar: string
 }
 
 export interface Comment extends Document {
-    post: string
+    post: Post
+    user: User
     content: string
+}
+
+export interface Clap extends Document {
+    post: string
+    user: User
+    count: number
 }
 
 export interface postResult {

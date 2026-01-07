@@ -44,9 +44,10 @@ class PostController implements Controller {
         next: NextFunction
     ): Promise<Response | void> => {
         try {
-            const { title, body } = req.body
-            const user = req.user._id
-            const post = await this.PostService.create(title, body, user)
+            const post = await this.PostService.create({
+                ...req.body,
+                user: req.user.id,
+            })
 
             return res.status(201).json({
                 status: 'success',
@@ -66,6 +67,7 @@ class PostController implements Controller {
     ): Promise<Response | void> => {
         try {
             const id = req.params.id
+
             const post = await this.PostService.getPost(id)
 
             res.status(200).json({
@@ -109,7 +111,7 @@ class PostController implements Controller {
     ): Promise<Response | void> => {
         try {
             const id = req.params.id
-            const user = req.user._id
+            const user = req.user.id
 
             await this.PostService.deletePost(id, user)
 
@@ -130,13 +132,9 @@ class PostController implements Controller {
     ): Promise<Response | void> => {
         try {
             const id = req.params.id
-            const user = req.user._id
-            const { title, body } = req.body
+            const user = req.user.id
 
-            const post = await this.PostService.editPost(id, user, {
-                title,
-                body,
-            })
+            const post = await this.PostService.editPost(id, user, req.body)
 
             return res.status(200).json({
                 status: 'success',
