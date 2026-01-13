@@ -11,7 +11,6 @@ function validationMiddleware(schema: Joi.Schema): RequestHandler {
         const validationOptions = {
             abortEarly: false,
             allowUnknown: false,
-            skipUnknown: true,
         }
 
         try {

@@ -25,7 +25,10 @@ const register = Joi.object({
                 'Password must contain at least one special character',
             'any.required': 'Password is required',
         }),
-    avatar: Joi.string().optional(),
+    avatar: Joi.object({
+        url: Joi.string(),
+        publicId: Joi.string(),
+    }).optional(),
     bio: Joi.string().optional(),
     city: Joi.string().optional(),
     country: Joi.string().optional(),

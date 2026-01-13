@@ -5,7 +5,7 @@ export interface createPostProps {
     user: string
     title: string
     body: string
-    postAvatar?: string
+    postAvatar?: { url: string; publicId: string }
 }
 
 export interface Post extends Document {

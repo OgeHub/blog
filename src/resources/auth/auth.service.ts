@@ -8,8 +8,11 @@ import crypto from 'crypto'
 import HttpException from '@/utils/exceptions/http.exception'
 import { createUser } from '../user/user.interface'
 import { loginProps, resetPasswordProps } from './auth.interface'
+import UploadService from '../upload/upload.service'
 
 class AuthService {
+    private uploadService = new UploadService()
+
     public async isUsernameAvailable(username: string): Promise<string> {
         try {
             /**Find user with username */
@@ -34,6 +37,13 @@ class AuthService {
                 throw new HttpException(
                     400,
                     'User already exist, login instead'
+                )
+            }
+
+            if (payload.avatar) {
+                await this.uploadService.updateFileTag(
+                    payload.avatar.publicId,
+                    'avatar'
                 )
             }
 

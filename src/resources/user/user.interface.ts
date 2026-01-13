@@ -11,12 +11,16 @@ export interface createUser {
     lastName: string
     password: string
     email: string
-    avatar?: string
+    avatar?: { url: string; publicId: string }
     bio?: string
     city?: string
     country?: string
 }
 
+export interface updateAvatarProps {
+    url: string
+    publicId: string
+}
 export interface updatePasswordProps {
     oldPassword: string
     newPassword: string
@@ -28,7 +32,7 @@ interface User extends Document {
     username: string
     firstName: string
     lastName: string
-    avatar: string
+    avatar: { url: string; publicId: string }
     bio: string
     password: string
     email: string
