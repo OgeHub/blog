@@ -5,11 +5,12 @@ const edit = Joi.object({
     username: Joi.string().optional(),
     firstName: Joi.string().min(3).max(30).optional(),
     lastName: Joi.string().min(3).max(30).optional(),
-    avatar: Joi.string().optional(),
     bio: Joi.string().optional(),
     city: Joi.string().optional(),
     country: Joi.string().optional(),
-}).strict()
+})
+    .min(1)
+    .strict()
 
 /** Validates update password */
 const updatePassword = Joi.object({

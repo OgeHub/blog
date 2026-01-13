@@ -1,8 +1,22 @@
-import { model } from 'mongoose'
+import { model, Schema } from 'mongoose'
 import bcrypt from 'bcrypt'
 import User, { RoleEnum } from '@/resources/user/user.interface'
 import crypto from 'crypto'
 import createSchema from '@/utils/shared/createSchema'
+
+export const AvatarSchema = new Schema(
+    {
+        url: {
+            type: String,
+            required: true,
+        },
+        publicId: {
+            type: String,
+            required: true,
+        },
+    },
+    { timestamps: false, _id: false }
+)
 
 const UserSchema = createSchema({
     username: {
@@ -31,7 +45,7 @@ const UserSchema = createSchema({
     },
 
     avatar: {
-        type: String,
+        type: AvatarSchema,
     },
 
     bio: {

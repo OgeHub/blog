@@ -7,7 +7,8 @@
             "@/resources/*": ["resources/*"],
             "@/utils/*": ["utils/*"],
             "@/middleware/*": ["middleware/*"],
-            "@/views/*": ["views/*"]
+            "@/views/*": ["views/*"],
+            "@/config/*": ["config/*"]
         },
         "outDir": "dist",
         "esModuleInterop": true,

@@ -4,11 +4,12 @@ import validationMiddleware from '@/middleware/validation.middleware'
 import validate from '@/resources/user/user.validation'
 import UserService from '@/resources/user/user.service'
 import authenticated from '@/middleware/authenticated.middleware'
+import { upload } from '@/config/cloudinary'
 
 class UserController implements Controller {
     public path = '/users'
     public router = Router()
-    private UserService = new UserService()
+    private userService = new UserService()
 
     constructor() {
         this.initializeRouter()
@@ -35,6 +36,19 @@ class UserController implements Controller {
         this.router.get(`${this.path}/:id`, this.getUser)
 
         this.router.get(`${this.path}`, this.getUsers)
+
+        this.router.patch(
+            `${this.path}/me/avatar`,
+            authenticated,
+            upload.single('file'),
+            this.updateUserAvatar
+        )
+
+        this.router.delete(
+            `${this.path}/me/avatar`,
+            authenticated,
+            this.removeUserAvatar
+        )
     }
 
     /** User Controllers */
@@ -46,7 +60,7 @@ class UserController implements Controller {
         next: NextFunction
     ): Promise<Response | void> => {
         try {
-            const user = await this.UserService.getUser(req.user.id)
+            const user = await this.userService.getUser(req.user.id)
 
             return res.status(200).json({
                 status: 'success',
@@ -68,7 +82,7 @@ class UserController implements Controller {
         try {
             const userID = req.user.id
 
-            const user = await this.UserService.editUser(userID, req.body)
+            const user = await this.userService.editUser(userID, req.body)
 
             return res.status(200).json({
                 status: 'success',
@@ -88,7 +102,7 @@ class UserController implements Controller {
         next: NextFunction
     ): Promise<Response | void> => {
         try {
-            await this.UserService.updateUserPassword(req.user, req.body)
+            await this.userService.updateUserPassword(req.user, req.body)
 
             return res.status(200).json({
                 status: 'success',
@@ -109,7 +123,7 @@ class UserController implements Controller {
         try {
             const id = req.params.id
 
-            const user = await this.UserService.getUser(id)
+            const user = await this.userService.getUser(id)
 
             return res.status(200).json({
                 status: 'success',
@@ -131,7 +145,7 @@ class UserController implements Controller {
         try {
             const { limit = 20, cursor } = req.query
 
-            const users = await this.UserService.getAllUsers({
+            const users = await this.userService.getAllUsers({
                 limit: limit as number,
                 cursor: cursor as string,
             })
@@ -143,6 +157,48 @@ class UserController implements Controller {
             })
         } catch (error: any) {
             console.error(`[GetUsers]: ${error}`)
+            next(error)
+        }
+    }
+
+    // update avatar
+    private updateUserAvatar = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<Response | void> => {
+        try {
+            const file = req.file as any
+
+            const updatedUser = await this.userService.updateUserAvatar(
+                req.user,
+                { url: file.path, publicId: file.filename }
+            )
+
+            return res.status(200).json({
+                status: 'success',
+                message: 'Avatar updated successfully',
+                data: updatedUser,
+            })
+        } catch (error: any) {
+            next(error)
+        }
+    }
+
+    // remove avatar
+    private removeUserAvatar = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<Response | void> => {
+        try {
+            await this.userService.removeUserAvatar(req.user)
+
+            return res.status(200).json({
+                status: 'success',
+                message: 'Avatar removed successfully',
+            })
+        } catch (error: any) {
             next(error)
         }
     }

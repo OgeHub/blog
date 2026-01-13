@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose'
 import { Clap, Comment, Post } from '@/resources/post/post.interface'
 import createSchema from '@/utils/shared/createSchema'
+import { AvatarSchema } from '../user/user.model'
 
 const CommentSchema = createSchema({
     post: {
@@ -67,7 +68,7 @@ const PostSchema = createSchema({
     },
 
     postAvatar: {
-        type: String,
+        type: AvatarSchema,
     },
 })
 
