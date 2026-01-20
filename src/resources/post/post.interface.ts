@@ -12,19 +12,7 @@ export interface Post extends Document {
     user: User
     title: string
     body: string
-    postAvatar: string
-}
-
-export interface Comment extends Document {
-    post: Post
-    user: User
-    content: string
-}
-
-export interface Clap extends Document {
-    post: string
-    user: User
-    count: number
+    postAvatar: { url: string; publicId: string }
 }
 
 export interface postResult {
