@@ -8,11 +8,19 @@ import {
 import mongoose from 'mongoose'
 import { author_selected_field } from '../user/user.interface'
 import HttpException from '@/utils/exceptions/http.exception'
+import UploadService from '../upload/upload.service'
 
 class PostService {
+    private uploadService = new UploadService()
     /**Create a post */
     public async create(payload: createPostProps): Promise<Post> {
         try {
+            if (payload?.postAvatar) {
+                await this.uploadService.updateFileTag(
+                    payload.postAvatar.publicId,
+                    'avatar'
+                )
+            }
             const post = await PostModel.create(payload)
 
             return post
@@ -76,6 +84,11 @@ class PostService {
                 )
 
             await PostModel.findByIdAndDelete(id)
+
+            // delete media associated with the post if any
+            if (post?.postAvatar) {
+                await this.uploadService.deleteFile(post?.postAvatar?.publicId)
+            }
         } catch (error) {
             throw error
         }
