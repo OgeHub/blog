@@ -9,6 +9,8 @@ import mongoose from 'mongoose'
 import { author_selected_field } from '../user/user.interface'
 import HttpException from '@/utils/exceptions/http.exception'
 import UploadService from '../upload/upload.service'
+import { CommentModel } from '../comment/comment.model'
+import { ReplyModel } from '../reply/reply.model'
 
 class PostService {
     private uploadService = new UploadService()
@@ -74,23 +76,42 @@ class PostService {
 
     /**Delete post */
     public async deletePost(id: string, userID: string): Promise<void> {
+        const post = await this.getPost(id)
+
+        if (post?.user.id !== userID)
+            throw new HttpException(
+                403,
+                'You can only delete post you authored'
+            )
+
+        // start a session for transaction
+        const session = await mongoose.startSession()
+        session.startTransaction()
         try {
-            const post = await this.getPost(id)
+            // delete associated comments and replies
+            const comments = await CommentModel.find({ post: id }).exec()
+            const commentIds = comments.map((comment) => comment._id)
 
-            if (post?.user.id !== userID)
-                throw new HttpException(
-                    403,
-                    'You can only delete post you authored'
-                )
+            await ReplyModel.deleteMany({ comment: { $in: commentIds } })
+                .session(session)
+                .exec()
+            await CommentModel.deleteMany({ post: id }).session(session).exec()
 
-            await PostModel.findByIdAndDelete(id)
+            // delete the post
+            await PostModel.findByIdAndDelete(id).session(session).exec()
 
-            // delete media associated with the post if any
-            if (post?.postAvatar) {
-                await this.uploadService.deleteFile(post?.postAvatar?.publicId)
-            }
+            await session.commitTransaction()
         } catch (error) {
+            console.error('Error deleting post, comments, and replies:', error)
+            await session.abortTransaction()
             throw error
+        } finally {
+            session.endSession()
+        }
+
+        // delete media associated with the post if any
+        if (post?.postAvatar) {
+            await this.uploadService.deleteFile(post?.postAvatar?.publicId)
         }
     }
 

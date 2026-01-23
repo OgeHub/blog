@@ -7,6 +7,8 @@ import {
 } from './comment.interface'
 import { CommentModel } from './comment.model'
 import HttpException from '@/utils/exceptions/http.exception'
+import { ReplyModel } from '../reply/reply.model'
+import { author_selected_field } from '../user/user.interface'
 
 class CommentService {
     public async addCommentToPost(payload: createCommentProps) {
@@ -25,7 +27,7 @@ class CommentService {
         const comments = await CommentModel.find(filter)
             .sort({ createdAt: -1 })
             .limit(limit)
-            .populate('user')
+            .populate([{ path: 'user', select: author_selected_field }])
             .exec()
 
         return {
@@ -51,7 +53,27 @@ class CommentService {
                 'You can only delete your own comments'
             )
 
-        return await CommentModel.findByIdAndDelete(commentId).exec()
+        // start a session for transaction
+        const session = await mongoose.startSession()
+        session.startTransaction()
+        try {
+            // Delete associated replies
+            await ReplyModel.deleteMany({ comment: commentId })
+                .session(session)
+                .exec()
+
+            await CommentModel.findByIdAndDelete(commentId)
+                .session(session)
+                .exec()
+
+            await session.commitTransaction()
+        } catch (error) {
+            console.error('Error deleting comment and replies:', error)
+            await session.abortTransaction()
+            throw error
+        } finally {
+            session.endSession()
+        }
     }
 
     public async updateComment(payload: updateCommentProps) {
@@ -64,7 +86,7 @@ class CommentService {
         if (comment.user._id.toString() !== user)
             throw new HttpException(
                 403,
-                'You can only delete your own comments'
+                'You can only update your own comments'
             )
 
         return await CommentModel.findByIdAndUpdate(
@@ -76,7 +98,7 @@ class CommentService {
 
     public async getCommentById(commentId: string) {
         const comment = await CommentModel.findById(commentId)
-            .populate('user')
+            .populate([{ path: 'user', select: author_selected_field }])
             .exec()
 
         if (!comment) throw new HttpException(404, 'Comment not found')

@@ -22,6 +22,6 @@ const CommentSchema = createSchema({
     },
 })
 
-CommentSchema.index({ post: 1, user: 1 }, { unique: true })
+CommentSchema.index({ post: 1 })
 
 export const CommentModel = model<Comment>('Comment', CommentSchema)
