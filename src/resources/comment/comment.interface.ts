@@ -27,7 +27,7 @@ export interface updateCommentProps {
 }
 
 export interface commentResult {
-    posts: Comment[] | []
+    comments: Comment[] | []
     cursor: string | null
     hasMore: boolean
 }

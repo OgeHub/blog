@@ -7,6 +7,7 @@ import UserController from '@/resources/user/user.controller'
 import AuthController from '@/resources/auth/auth.controller'
 import UploadController from './resources/upload/upload.controller'
 import CommentController from './resources/comment/comment.controller'
+import ReplyController from './resources/reply/reply.controller'
 
 validateEnv()
 
@@ -17,6 +18,7 @@ const app = new App(
         new UserController(),
         new UploadController(),
         new CommentController(),
+        new ReplyController(),
     ],
     Number(process.env.PORT)
 )

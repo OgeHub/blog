@@ -97,7 +97,7 @@ npm start
 
 -   ✅ Authentication & user management
 -   ✅ Blog post creation
--   ⏳ Comments & claps
+-   ✅ Comments & replies
+-   ⏳ Claps
 -   ⏳ Subscription billing (Stripe)
 -   ⏳ Role-based access control
--   ⏳ Rate limiting & API hardening
