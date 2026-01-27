@@ -8,19 +8,21 @@ import AuthController from '@/resources/auth/auth.controller'
 import UploadController from './resources/upload/upload.controller'
 import CommentController from './resources/comment/comment.controller'
 import ReplyController from './resources/reply/reply.controller'
+import ClapController from './resources/clap/clap.controller'
 
 validateEnv()
 
 const app = new App(
-    [
-        new AuthController(),
-        new PostController(),
-        new UserController(),
-        new UploadController(),
-        new CommentController(),
-        new ReplyController(),
-    ],
-    Number(process.env.PORT)
+  [
+    new AuthController(),
+    new PostController(),
+    new UserController(),
+    new UploadController(),
+    new CommentController(),
+    new ReplyController(),
+    new ClapController(),
+  ],
+  Number(process.env.PORT)
 )
 
 app.listen()
