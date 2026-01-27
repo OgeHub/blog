@@ -20,26 +20,26 @@ Although this started as my first Node.js + TypeScript API, built with guidance 
 
 ### 🔐 Authentication
 
--   User registration
--   Email verification
--   Secure login (JWT-based)
--   Forgot & reset password flows
+- User registration
+- Email verification
+- Secure login (JWT-based)
+- Forgot & reset password flows
 
 ### 👨🏾‍💼 User Management
 
--   Fetch user profile
--   Update profile information
--   Change password
--   List users
+- Fetch user profile
+- Update profile information
+- Change password
+- List users
 
 ### 📝 Blogging
 
--   Create blog posts
--   Comments and claps
+- Create blog posts
+- Comments and claps
 
 ### 💳 Subscriptions
 
--   Monthly & yearly membership plans
+- Monthly & yearly membership plans
 
 ---
 
@@ -63,9 +63,9 @@ Although this started as my first Node.js + TypeScript API, built with guidance 
 
 ### Prerequisites
 
--   Node.js >= 18
--   MongoDB (local or Atlas)
--   npm
+- Node.js >= 18
+- MongoDB (local or Atlas)
+- npm
 
 ### Installation
 
@@ -77,8 +77,8 @@ npm install
 
 ### Environment Variable
 
--   Check .env.example file
--   Create .env file in the root directory
+- Check .env.example file
+- Create .env file in the root directory
 
 ### Running the App
 
@@ -95,9 +95,9 @@ npm start
 
 ## 🛣 Roadmap
 
--   ✅ Authentication & user management
--   ✅ Blog post creation
--   ✅ Comments & replies
--   ⏳ Claps
--   ⏳ Subscription billing (Stripe)
--   ⏳ Role-based access control
+- ✅ Authentication & user management
+- ✅ Blog post creation
+- ✅ Comments & replies
+- ✅ Claps
+- ⏳ Subscription billing (Stripe)
+- ⏳ Role-based access control

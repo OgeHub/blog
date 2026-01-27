@@ -9,6 +9,12 @@ export interface Clap extends Document {
     count: number
 }
 
+export interface addClapProps {
+    target: string
+    targetType: TargetType
+    user: string
+}
+
 export enum TargetType {
     Post = 'Post',
     Comment = 'Comment',
