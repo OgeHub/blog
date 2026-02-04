@@ -5,203 +5,204 @@ import validate from '@/resources/user/user.validation'
 import UserService from '@/resources/user/user.service'
 import authenticated from '@/middleware/authenticated.middleware'
 import { upload } from '@/config/cloudinary'
+import logger from '@/utils/shared/customLogger'
 
 class UserController implements Controller {
-    public path = '/users'
-    public router = Router()
-    private userService = new UserService()
+  public path = '/users'
+  public router = Router()
+  private userService = new UserService()
 
-    constructor() {
-        this.initializeRouter()
+  constructor() {
+    this.initializeRouter()
+  }
+
+  /** Initialize all user endpoints */
+  private initializeRouter(): void {
+    this.router.use(authenticated)
+
+    this.router.get(`${this.path}/me`, this.getUserProfile)
+
+    this.router.patch(
+      `${this.path}/me`,
+      validationMiddleware(validate.edit),
+      this.editUserProfile
+    )
+
+    this.router.patch(
+      `${this.path}/update-password`,
+      validationMiddleware(validate.updatePassword),
+      this.updateUserPassword
+    )
+
+    this.router.get(`${this.path}/:id`, this.getUser)
+
+    this.router.get(`${this.path}`, this.getUsers)
+
+    this.router.patch(
+      `${this.path}/me/avatar`,
+      authenticated,
+      upload.single('file'),
+      this.updateUserAvatar
+    )
+
+    this.router.delete(
+      `${this.path}/me/avatar`,
+      authenticated,
+      this.removeUserAvatar
+    )
+  }
+
+  /** User Controllers */
+
+  /**Get a user profile */
+  private getUserProfile = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> => {
+    try {
+      const user = await this.userService.getUser(req.user.id)
+
+      return res.status(200).json({
+        status: 'success',
+        message: 'User profile retrieved successfully',
+        data: user,
+      })
+    } catch (error: any) {
+      logger.error(`[GetUserProfile]: ${error}`)
+      next(error)
     }
+  }
 
-    /** Initialize all user endpoints */
-    private initializeRouter(): void {
-        this.router.use(authenticated)
+  /**Edit user details */
+  private editUserProfile = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> => {
+    try {
+      const userID = req.user.id
 
-        this.router.get(`${this.path}/me`, this.getUserProfile)
+      const user = await this.userService.editUser(userID, req.body)
 
-        this.router.patch(
-            `${this.path}/me`,
-            validationMiddleware(validate.edit),
-            this.editUserProfile
-        )
-
-        this.router.patch(
-            `${this.path}/update-password`,
-            validationMiddleware(validate.updatePassword),
-            this.updateUserPassword
-        )
-
-        this.router.get(`${this.path}/:id`, this.getUser)
-
-        this.router.get(`${this.path}`, this.getUsers)
-
-        this.router.patch(
-            `${this.path}/me/avatar`,
-            authenticated,
-            upload.single('file'),
-            this.updateUserAvatar
-        )
-
-        this.router.delete(
-            `${this.path}/me/avatar`,
-            authenticated,
-            this.removeUserAvatar
-        )
+      return res.status(200).json({
+        status: 'success',
+        message: 'User details edited successfully',
+        data: user,
+      })
+    } catch (error: any) {
+      logger.error(`[EditUserProfile]: ${error}`)
+      next(error)
     }
+  }
 
-    /** User Controllers */
+  /**Edit user password */
+  private updateUserPassword = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> => {
+    try {
+      await this.userService.updateUserPassword(req.user, req.body)
 
-    /**Get a user profile */
-    private getUserProfile = async (
-        req: Request,
-        res: Response,
-        next: NextFunction
-    ): Promise<Response | void> => {
-        try {
-            const user = await this.userService.getUser(req.user.id)
-
-            return res.status(200).json({
-                status: 'success',
-                message: 'User profile retrieved successfully',
-                data: user,
-            })
-        } catch (error: any) {
-            console.error(`[GetUserProfile]: ${error}`)
-            next(error)
-        }
+      return res.status(200).json({
+        status: 'success',
+        message: 'User password updated successfully',
+      })
+    } catch (error: any) {
+      logger.error(`[UpdateUserPassword]: ${error}`)
+      next(error)
     }
+  }
 
-    /**Edit user details */
-    private editUserProfile = async (
-        req: Request,
-        res: Response,
-        next: NextFunction
-    ): Promise<Response | void> => {
-        try {
-            const userID = req.user.id
+  /**Get a user details */
+  private getUser = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> => {
+    try {
+      const id = req.params.id
 
-            const user = await this.userService.editUser(userID, req.body)
+      const user = await this.userService.getUser(id)
 
-            return res.status(200).json({
-                status: 'success',
-                message: 'User details edited successfully',
-                data: user,
-            })
-        } catch (error: any) {
-            console.error(`[EditUserProfile]: ${error}`)
-            next(error)
-        }
+      return res.status(200).json({
+        status: 'success',
+        message: 'User retrieved successfully',
+        data: user,
+      })
+    } catch (error: any) {
+      logger.error(`[GetUser]: ${error}`)
+      next(error)
     }
+  }
 
-    /**Edit user password */
-    private updateUserPassword = async (
-        req: Request,
-        res: Response,
-        next: NextFunction
-    ): Promise<Response | void> => {
-        try {
-            await this.userService.updateUserPassword(req.user, req.body)
+  /**Get all users */
+  private getUsers = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> => {
+    try {
+      const { limit = 20, cursor } = req.query
 
-            return res.status(200).json({
-                status: 'success',
-                message: 'User password updated successfully',
-            })
-        } catch (error: any) {
-            console.error(`[UpdateUserPassword]: ${error}`)
-            next(error)
-        }
+      const users = await this.userService.getAllUsers({
+        limit: limit as number,
+        cursor: cursor as string,
+      })
+
+      return res.status(200).json({
+        status: 'success',
+        message: 'Users retrieved successfully',
+        data: users,
+      })
+    } catch (error: any) {
+      logger.error(`[GetUsers]: ${error}`)
+      next(error)
     }
+  }
 
-    /**Get a user details */
-    private getUser = async (
-        req: Request,
-        res: Response,
-        next: NextFunction
-    ): Promise<Response | void> => {
-        try {
-            const id = req.params.id
+  // update avatar
+  private updateUserAvatar = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> => {
+    try {
+      const file = req.file as any
 
-            const user = await this.userService.getUser(id)
+      const updatedUser = await this.userService.updateUserAvatar(req.user, {
+        url: file.path,
+        publicId: file.filename,
+      })
 
-            return res.status(200).json({
-                status: 'success',
-                message: 'User retrieved successfully',
-                data: user,
-            })
-        } catch (error: any) {
-            console.error(`[GetUser]: ${error}`)
-            next(error)
-        }
+      return res.status(200).json({
+        status: 'success',
+        message: 'Avatar updated successfully',
+        data: updatedUser,
+      })
+    } catch (error: any) {
+      next(error)
     }
+  }
 
-    /**Get all users */
-    private getUsers = async (
-        req: Request,
-        res: Response,
-        next: NextFunction
-    ): Promise<Response | void> => {
-        try {
-            const { limit = 20, cursor } = req.query
+  // remove avatar
+  private removeUserAvatar = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> => {
+    try {
+      await this.userService.removeUserAvatar(req.user)
 
-            const users = await this.userService.getAllUsers({
-                limit: limit as number,
-                cursor: cursor as string,
-            })
-
-            return res.status(200).json({
-                status: 'success',
-                message: 'Users retrieved successfully',
-                data: users,
-            })
-        } catch (error: any) {
-            console.error(`[GetUsers]: ${error}`)
-            next(error)
-        }
+      return res.status(200).json({
+        status: 'success',
+        message: 'Avatar removed successfully',
+      })
+    } catch (error: any) {
+      next(error)
     }
-
-    // update avatar
-    private updateUserAvatar = async (
-        req: Request,
-        res: Response,
-        next: NextFunction
-    ): Promise<Response | void> => {
-        try {
-            const file = req.file as any
-
-            const updatedUser = await this.userService.updateUserAvatar(
-                req.user,
-                { url: file.path, publicId: file.filename }
-            )
-
-            return res.status(200).json({
-                status: 'success',
-                message: 'Avatar updated successfully',
-                data: updatedUser,
-            })
-        } catch (error: any) {
-            next(error)
-        }
-    }
-
-    // remove avatar
-    private removeUserAvatar = async (
-        req: Request,
-        res: Response,
-        next: NextFunction
-    ): Promise<Response | void> => {
-        try {
-            await this.userService.removeUserAvatar(req.user)
-
-            return res.status(200).json({
-                status: 'success',
-                message: 'Avatar removed successfully',
-            })
-        } catch (error: any) {
-            next(error)
-        }
-    }
+  }
 }
 
 export default UserController
