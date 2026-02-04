@@ -9,6 +9,7 @@ import { CommentModel } from './comment.model'
 import HttpException from '@/utils/exceptions/http.exception'
 import { ReplyModel } from '../reply/reply.model'
 import { author_selected_field } from '../user/user.interface'
+import logger from '@/utils/shared/customLogger'
 
 class CommentService {
   public async addCommentToPost(payload: createCommentProps) {
@@ -190,7 +191,7 @@ class CommentService {
 
       await session.commitTransaction()
     } catch (error) {
-      console.error('Error deleting comment and replies:', error)
+      logger.error('Error deleting comment and replies:', error)
       await session.abortTransaction()
       throw error
     } finally {

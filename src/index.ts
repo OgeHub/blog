@@ -25,4 +25,6 @@ const app = new App(
   Number(process.env.PORT)
 )
 
+// handle app crash TODO
+
 app.listen()

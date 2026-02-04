@@ -11,6 +11,7 @@ import HttpException from '@/utils/exceptions/http.exception'
 import UploadService from '../upload/upload.service'
 import { CommentModel } from '../comment/comment.model'
 import { ReplyModel } from '../reply/reply.model'
+import logger from '@/utils/shared/customLogger'
 
 class PostService {
   private uploadService = new UploadService()
@@ -225,7 +226,7 @@ class PostService {
 
       await session.commitTransaction()
     } catch (error) {
-      console.error('Error deleting post, comments, and replies:', error)
+      logger.error('Error deleting post, comments, and replies:', error)
       await session.abortTransaction()
       throw error
     } finally {
