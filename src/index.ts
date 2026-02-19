@@ -9,6 +9,7 @@ import UploadController from './resources/upload/upload.controller'
 import CommentController from './resources/comment/comment.controller'
 import ReplyController from './resources/reply/reply.controller'
 import ClapController from './resources/clap/clap.controller'
+import SubscriptionController from './resources/subscription/subscription.controller'
 
 validateEnv()
 
@@ -21,6 +22,7 @@ const app = new App(
     new CommentController(),
     new ReplyController(),
     new ClapController(),
+    new SubscriptionController(),
   ],
   Number(process.env.PORT)
 )

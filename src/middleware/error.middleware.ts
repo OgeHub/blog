@@ -35,6 +35,15 @@ export const errorMiddleware = (
     })
   }
 
+  // stripe idempotency error
+  if (error.error?.type === 'idempotency_error') {
+    return res.status(400).send({
+      status: 'error',
+      statusCode: 400,
+      message: `Duplicate stripe request, please try again`,
+    })
+  }
+
   // Log the errors we didn't handle
   logger.error(`[ErrorHandler]:${error.message}`)
 

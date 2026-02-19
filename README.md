@@ -45,17 +45,18 @@ Although this started as my first Node.js + TypeScript API, built with guidance 
 
 ## 🧱 Tech Stack
 
-| Layer          | Technology |
-| -------------- | ---------- |
-| Runtime        | Node.js    |
-| Language       | TypeScript |
-| Framework      | Express.js |
-| Database       | MongoDB    |
-| ODM            | Mongoose   |
-| Authentication | JWT        |
-| Email Service  | Brevo      |
-| Hosting        | Render     |
-| Storage        | Cloudinary |
+| Layer                  | Technology |
+| ---------------------- | ---------- |
+| Runtime                | Node.js    |
+| Language               | TypeScript |
+| Framework              | Express.js |
+| Database               | MongoDB    |
+| ODM                    | Mongoose   |
+| Authentication         | JWT        |
+| Email Service          | Brevo      |
+| Hosting                | Render     |
+| Storage                | Cloudinary |
+| Subscription (billing) | Stripe     |
 
 ---
 
@@ -99,5 +100,5 @@ npm start
 - ✅ Blog post creation
 - ✅ Comments & replies
 - ✅ Claps
-- ⏳ Subscription billing (Stripe)
+- ✅ Subscription billing (Stripe)
 - ⏳ Role-based access control
