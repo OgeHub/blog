@@ -1,71 +1,72 @@
 import { Document } from 'mongoose'
 
 export enum RoleEnum {
-    Guest = 'Guest',
-    Member = 'Member',
+  Guest = 'Guest',
+  Member = 'Member',
 }
 
 export interface createUser {
-    username: string
-    firstName: string
-    lastName: string
-    password: string
-    email: string
-    avatar?: { url: string; publicId: string }
-    bio?: string
-    city?: string
-    country?: string
+  username: string
+  firstName: string
+  lastName: string
+  password: string
+  email: string
+  avatar?: { url: string; publicId: string }
+  bio?: string
+  city?: string
+  country?: string
 }
 
 export interface updateAvatarProps {
-    url: string
-    publicId: string
+  url: string
+  publicId: string
 }
 export interface updatePasswordProps {
-    oldPassword: string
-    newPassword: string
+  oldPassword: string
+  newPassword: string
 }
 
 interface User extends Document {
-    _id: string
-    id: string
-    username: string
-    firstName: string
-    lastName: string
-    avatar: { url: string; publicId: string }
-    bio: string
-    password: string
-    email: string
-    city: string
-    country: string
-    role: RoleEnum
-    isEmailVerified: boolean
-    emailVerificationToken: string | undefined
-    verificationTokenExpires: Date | undefined
-    passwordResetToken: string | undefined
-    passwordTokenExpires: Date | undefined
+  _id: string
+  id: string
+  username: string
+  firstName: string
+  lastName: string
+  avatar: { url: string; publicId: string }
+  bio: string
+  password: string
+  email: string
+  city: string
+  country: string
+  stripeCustomerId: string
+  role: RoleEnum
+  isEmailVerified: boolean
+  emailVerificationToken: string | undefined
+  verificationTokenExpires: Date | undefined
+  passwordResetToken: string | undefined
+  passwordTokenExpires: Date | undefined
 
-    isValidPassword(password: string): Promise<Error | Boolean>
-    getEmailVerificationToken(): string
-    getPasswordResetToken(): string
+  isValidPassword(password: string): Promise<Error | Boolean>
+  getEmailVerificationToken(): string
+  getPasswordResetToken(): string
 }
 
 export const author_selected_field = [
-    'username',
-    'firstName',
-    'lastName',
-    'email',
-    'role',
-    'avatar',
-    'bio',
-    'city',
-    'country',
+  'username',
+  'firstName',
+  'lastName',
+  'email',
+  'role',
+  'avatar',
+  'bio',
+  'city',
+  'country',
 ]
 
 export interface userResult {
-    users: User[] | []
-    cursor: string | null
-    hasMore: boolean
+  users: User[] | []
+  cursor: string | null
+  hasMore: boolean
 }
 
 export default User
