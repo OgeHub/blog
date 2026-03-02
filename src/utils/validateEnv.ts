@@ -8,6 +8,8 @@ function validateEnv(): void {
         MONGO_URI: str(),
         JWT_SECRET: str(),
         PORT: port({ default: 3000 }),
+        STRIPE_BASE_URL: str(),
+        STRIPE_SECRET_KEY: str(),
     });
 }
 

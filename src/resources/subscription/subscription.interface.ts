@@ -33,4 +33,5 @@ export interface Subscription extends Document {
   canceledAt?: Date
   cancelAtEndOfPeriod: boolean
   liveMode: boolean
+  endedAt?: Date
 }
