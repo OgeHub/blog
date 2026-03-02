@@ -120,7 +120,7 @@ class Stripe {
         endpoint: '/v1/subscriptions',
         payload: params.toString(),
         customHeader: {
-          'Idempotency-Key': `subscription-${userId}-${priceId}-${Date.now()}`,
+          'Idempotency-Key': `subscription-${userId}-${priceId}`,
         },
       })
 
@@ -128,6 +128,38 @@ class Stripe {
         `Stripe subscription created for customer ID: ${customerId} with subscription ID: ${response.id}`
       )
 
+      return response
+    } catch (error: any) {
+      throw error.response?.data || error
+    }
+  }
+
+  public async cancelSubscription(subscriptionId: string) {
+    try {
+      const response = await this.stripeCall({
+        method: 'POST',
+        endpoint: `/v1/subscriptions/${subscriptionId}/cancel`,
+      })
+
+      logger.info(`Stripe subscription cancelled with ID: ${subscriptionId}`)
+      return response
+    } catch (error: any) {
+      throw error.response?.data || error
+    }
+  }
+
+  public async resumeSubscription(subscriptionId: string) {
+    try {
+      const params = new URLSearchParams()
+      params.append('cancel_at_period_end', 'false')
+
+      const response = await this.stripeCall({
+        method: 'POST',
+        endpoint: `/v1/subscriptions/${subscriptionId}`,
+        payload: params.toString(),
+      })
+
+      logger.info(`Stripe subscription resumed with ID: ${subscriptionId}`)
       return response
     } catch (error: any) {
       throw error.response?.data || error

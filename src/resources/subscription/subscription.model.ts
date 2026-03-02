@@ -18,9 +18,24 @@ const subscriptionSchema = createSchema({
   canceledAt: { type: Date },
   cancelAtEndOfPeriod: { type: Boolean, required: true },
   liveMode: { type: Boolean, required: true },
+  endedAt: { type: Date },
 })
 
-subscriptionSchema.index({ subscriptionId: 1, priceId: 1 }, { unique: true })
+subscriptionSchema.index(
+  { user: 1 },
+  {
+    unique: true,
+    partialFilterExpression: {
+      status: {
+        $in: [
+          SubscriptionStatus.ACTIVE,
+          SubscriptionStatus.TRIALING,
+          SubscriptionStatus.PAST_DUE,
+        ],
+      },
+    },
+  }
+)
 
 export const SubscriptionModel = model<Subscription>(
   'Subscription',

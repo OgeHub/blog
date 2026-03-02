@@ -102,14 +102,13 @@ class SubscriptionService {
     user.role = RoleEnum.Member
     await user.save()
   }
+
+  // TODO: implement webhooks to listen for subscription
+  // customer.subscription.trial_will_end
+  // invoice.payment_succeeded
+  // invoice.payment_failed
+  // customer.subscription.deleted
+  // customer.subscription.updated
 }
 
 export default SubscriptionService
-
-// TODO: implement webhooks to listen for subscription
-// customer.subscription.trial_will_end
-// invoice.payment_succeeded
-// invoice.payment_failed
-// customer.subscription.deleted
-// customer.subscription.updated
-// https://stripe.com/docs/billing/subscriptions/webhooks
