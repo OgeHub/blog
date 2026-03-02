@@ -1,6 +1,8 @@
 import axios from 'axios'
 import emailVerificationTemplate from '@/views/emailTemplates/verifyEmailTemplate'
 import resetPasswordTemplate from '@/views/emailTemplates/resetPasswordTemplate'
+import trialEndingTemplate from '@/views/emailTemplates/trialEndingTemplate'
+import paymentFailedTemplate from '@/views/emailTemplates/paymentFailedTemplate'
 import logger from './customLogger'
 
 interface sendEmailProps {
@@ -64,4 +66,36 @@ export const sendPasswordResetLink = async ({
   })
 
   await sendEmail({ recipient, html, subject: 'Explore: Reset password' })
+}
+
+export const sendTrialEndingEmail = async ({
+  recipient,
+  firstName,
+  trialEndDate,
+}: {
+  recipient: string
+  firstName: string
+  trialEndDate: string
+}) => {
+  const html = trialEndingTemplate({ firstName, trialEndDate })
+  await sendEmail({
+    recipient,
+    html,
+    subject: 'Explore: Your trial is ending soon',
+  })
+}
+
+export const sendPaymentFailedEmail = async ({
+  recipient,
+  firstName,
+}: {
+  recipient: string
+  firstName: string
+}) => {
+  const html = paymentFailedTemplate({ firstName })
+  await sendEmail({
+    recipient,
+    html,
+    subject: 'Explore: Payment failed',
+  })
 }

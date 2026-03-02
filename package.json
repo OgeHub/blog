@@ -46,6 +46,7 @@
     "morgan": "^1.10.0",
     "multer": "^2.0.2",
     "multer-storage-cloudinary": "^4.0.0",
+    "stripe": "^20.4.0",
     "winston": "^3.19.0"
   },
   "_moduleAliases": {

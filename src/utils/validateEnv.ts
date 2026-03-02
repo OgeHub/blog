@@ -10,6 +10,7 @@ function validateEnv(): void {
         PORT: port({ default: 3000 }),
         STRIPE_BASE_URL: str(),
         STRIPE_SECRET_KEY: str(),
+        STRIPE_WEBHOOK_SECRET: str(),
     });
 }
 

@@ -6,7 +6,12 @@ import {
 } from './subscription.interface'
 import User, { RoleEnum } from '../user/user.interface'
 import { SubscriptionModel } from './subscription.model'
+import UserModel from '../user/user.model'
 import HttpException from '@/utils/exceptions/http.exception'
+import {
+  sendTrialEndingEmail,
+  sendPaymentFailedEmail,
+} from '@/utils/shared/email'
 
 class SubscriptionService {
   private stripe = new Stripe()
@@ -103,12 +108,110 @@ class SubscriptionService {
     await user.save()
   }
 
-  // TODO: implement webhooks to listen for subscription
-  // customer.subscription.trial_will_end
-  // invoice.payment_succeeded
-  // invoice.payment_failed
-  // customer.subscription.deleted
-  // customer.subscription.updated
+  public async handleWebhook(event: { type: string; data: { object: any } }) {
+    switch (event.type) {
+      case 'customer.subscription.trial_will_end':
+        await this.handleTrialWillEnd(event.data.object)
+        break
+      case 'invoice.payment_succeeded':
+        await this.handlePaymentSucceeded(event.data.object)
+        break
+      case 'invoice.payment_failed':
+        await this.handlePaymentFailed(event.data.object)
+        break
+      case 'customer.subscription.deleted':
+        await this.handleSubscriptionDeleted(event.data.object)
+        break
+      case 'customer.subscription.updated':
+        await this.handleSubscriptionUpdated(event.data.object)
+        break
+      default:
+        break
+    }
+  }
+
+  private async handleTrialWillEnd(subscription: any) {
+    const sub = await SubscriptionModel.findOne({
+      subscriptionId: subscription.id,
+    }).populate('user')
+    if (!sub?.user) return
+    const user = sub.user as User
+    const trialEndDate = subscription.trial_end
+      ? new Date(subscription.trial_end * 1000).toLocaleDateString()
+      : ''
+    await sendTrialEndingEmail({
+      recipient: user.email,
+      firstName: user.firstName,
+      trialEndDate,
+    })
+  }
+
+  private async handlePaymentSucceeded(invoice: any) {
+    if (!invoice.subscription) return
+    const sub = await SubscriptionModel.findOne({
+      subscriptionId: invoice.subscription,
+    }).populate('user')
+    if (!sub) return
+    await SubscriptionModel.updateOne(
+      { subscriptionId: invoice.subscription },
+      { status: SubscriptionStatus.ACTIVE }
+    )
+    const user = sub.user as User
+    if (user?.role !== RoleEnum.Member) {
+      await UserModel.findByIdAndUpdate(user._id, { role: RoleEnum.Member })
+    }
+  }
+
+  private async handlePaymentFailed(invoice: any) {
+    if (!invoice.subscription) return
+    await SubscriptionModel.updateOne(
+      { subscriptionId: invoice.subscription },
+      { status: SubscriptionStatus.PAST_DUE }
+    )
+    const sub = await SubscriptionModel.findOne({
+      subscriptionId: invoice.subscription,
+    }).populate('user')
+    if (sub?.user) {
+      const user = sub.user as User
+      await sendPaymentFailedEmail({
+        recipient: user.email,
+        firstName: user.firstName,
+      })
+    }
+  }
+
+  private async handleSubscriptionDeleted(subscription: any) {
+    const sub = await SubscriptionModel.findOne({
+      subscriptionId: subscription.id,
+    })
+    if (!sub) return
+    await SubscriptionModel.updateOne(
+      { subscriptionId: subscription.id },
+      {
+        status: SubscriptionStatus.CANCELED,
+        endedAt: new Date(),
+      }
+    )
+    await UserModel.findOneAndUpdate(
+      { stripeCustomerId: subscription.customer },
+      { role: RoleEnum.Guest }
+    )
+  }
+
+  private async handleSubscriptionUpdated(subscription: any) {
+    await SubscriptionModel.updateOne(
+      { subscriptionId: subscription.id },
+      {
+        status: subscription.status as SubscriptionStatus,
+        currentPeriodStart: new Date(subscription.current_period_start * 1000),
+        currentPeriodEnd: new Date(subscription.current_period_end * 1000),
+        cancelAtEndOfPeriod: subscription.cancel_at_period_end ?? false,
+        trialEnd: subscription.trial_end
+          ? new Date(subscription.trial_end * 1000)
+          : undefined,
+      }
+    )
+  }
 }
 
 export default SubscriptionService

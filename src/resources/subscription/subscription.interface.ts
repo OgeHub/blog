@@ -22,11 +22,11 @@ export enum SubscriptionStatus {
 }
 
 export interface Subscription extends Document {
-  user: string
+  user: User
   stripeCustomerId: string
   subscriptionId: string
   priceId: string
-  status: string
+  status: SubscriptionStatus
   currentPeriodStart: Date
   currentPeriodEnd: Date
   trialEnd?: Date
