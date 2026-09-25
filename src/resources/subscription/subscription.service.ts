@@ -212,6 +212,11 @@ class SubscriptionService {
       }
     )
   }
+
+  public async getUserSubscriptions(userId: string) {
+    const subscriptions = await SubscriptionModel.find({ user: userId })
+    return subscriptions
+  }
 }
 
 export default SubscriptionService

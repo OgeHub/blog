@@ -20,6 +20,7 @@ class SubscriptionController implements Controller {
 
     this.router.get(`${this.path}/prices`, this.getPrices)
     this.router.get(`${this.path}/client-secret`, this.getClientSecret)
+    this.router.get(`${this.path}`, this.getUserSubscriptions)
     this.router.post(
       `${this.path}`,
       validationMiddleware(validate.createSubscription),
@@ -81,6 +82,26 @@ class SubscriptionController implements Controller {
       return res.status(200).json({
         status: 'success',
         message: 'Subscription created successfully',
+      })
+    } catch (error: any) {
+      next(error)
+    }
+  }
+
+  private getUserSubscriptions = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> => {
+    try {
+      const subscriptions = await this.subscriptionService.getUserSubscriptions(
+        req.user._id
+      )
+
+      return res.status(200).json({
+        status: 'success',
+        message: 'Subscriptions retrieved successfully',
+        data: subscriptions,
       })
     } catch (error: any) {
       next(error)

@@ -28,7 +28,7 @@ const sendEmail = async (payload: sendEmailProps) => {
 
     const response = await axios.post(url, body, { headers })
     return response.data
-  } catch (error) {
+  } catch (error: any) {
     logger.error('sendEmail error:', error)
     throw error
   }

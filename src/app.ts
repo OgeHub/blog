@@ -9,6 +9,8 @@ import Controller from '@/utils/interfaces/controller.interface'
 import { errorMiddleware, unhandledRoutes } from '@/middleware/error.middleware'
 import cronJobs from './jobs/scheduler'
 import logger from './utils/shared/customLogger'
+import path from 'path'
+import homePage from './views/pages/home'
 
 class App {
   /** Declare express and port */
@@ -44,12 +46,9 @@ class App {
     })
   }
 
-  private initializeBaseURL(): any {
-    this.express.get('/api', (req, res) => {
-      return res.status(200).send({
-        status: 'success',
-        message: 'Welcome to Blog API',
-      })
+  private initializeBaseURL(): void {
+    this.express.get('/', (_req, res) => {
+      return res.send(homePage())
     })
   }
 

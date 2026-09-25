@@ -62,10 +62,7 @@ class AuthService {
 
   public async verifyEmail(token: string): Promise<string | Error> {
     /**Hash token*/
-    const hashedToken = crypto
-      .createHash('sha256')
-      .update(token)
-      .digest('hex')
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex')
 
     /**Find user with the token */
     const user = await UserModel.findOne({
@@ -156,10 +153,7 @@ class AuthService {
   ): Promise<string | Error> {
     const { token, password } = payload
     /**Hash token */
-    const hashedToken = crypto
-      .createHash('sha256')
-      .update(token)
-      .digest('hex')
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex')
 
     /**Find user */
     const user = await UserModel.findOne({
