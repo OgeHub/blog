@@ -12,7 +12,7 @@ Although this started as my first Node.js + TypeScript API, built with guidance 
 
 ### 🌍 Live API
 
-👉 https://my-nodejs-typescript.onrender.com/api
+👉 https://my-nodejs-typescript.onrender.com
 
 ---
 
